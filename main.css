@@ -1,0 +1,317 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body,
+h1,
+p,
+ul,
+li {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* Светлая тема (по умолчанию) */
+    --bg-color: #f0f2f5;
+    --text-color: #1c1e21;
+    --primary-color: #2a9e2c;
+    --cell-bg: #ffffff;
+    --cell-hover-bg: #f2b7b8;
+    --cell-border: #dddddd;
+    --button-bg: #d1d1d1;
+    --button-hover-bg: #2faf31;
+}
+
+/* Темная тема */
+[data-theme="dark"] {
+  --bg-color: #333333;
+  --text-color: #e4e4e4;
+  --primary-color: #2a9e2c;
+  --cell-bg: #3a3b3c;
+  --cell-border: #565656;
+  --button-bg: #3a3b3c;
+  --button-hover-bg: #4e4f50;   
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.5;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* основной контейнер содержимого страницы */
+.wrapper {
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--button-bg);
+  color: var(--text-color);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn:hover {
+  background-color: var(--button-hover-bg);
+}
+
+.btn:active {
+    opacity: 0.5;
+}
+
+/* стили стартового экрана */
+.start-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.site-title {
+    margin-bottom: 5px;
+    font-size: 3.5rem;
+    color: var(--primary-color);
+}
+
+.author {
+    margin-bottom: 100px;
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+.btn-mode-game-container {
+    margin-bottom: 155px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.btn-mode-game {
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.btn-manager-container {
+    display: flex;
+    gap: 0.5em;
+}
+
+.btn-manager {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  width: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+   font-weight: bold; 
+}
+
+
+/* стили экрана Settings */
+.setting-screen,
+.result-screen {
+    margin: 2rem 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-title {
+    margin-bottom: 75px;
+}
+
+.sound-control-container,
+.theme-container {
+    max-width: 250px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.sound-control-container {
+    margin-bottom: 25px;
+}
+
+.sound-label,
+.theme-label {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+input[type="checkbox"] {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.theme-container {
+    margin-bottom: 125px;
+}
+
+select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid var(--cell-border);
+  background-color: var(--cell-bg);
+  color: var(--text-color);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn-back-start {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Экран результатов */
+.table-point {
+    max-width: 250px;
+    width: 100%;
+    margin-bottom: 125px;
+    font-size: 1.5rem;
+    color: var(--text-color);
+}
+
+tr {
+    text-align: center;
+}
+
+/* Экран игры */
+.game-srceen {
+  width: 100%;
+  max-width: 900px; /* Делаю игровой экран чуть шире пока так */
+  padding: 1rem;
+  border: 1px solid var(--cell-border); 
+}
+
+.game-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 1rem 1rem;
+  border-bottom: 2px solid var(--primary-color);
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.score-container,
+.time-container {
+    max-width: 300px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5rem;
+    color: var(--text-color);
+}
+
+.game {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px; /* Задал минимальную высоту для контейнера сетки */
+  margin-bottom: 50px;
+}
+
+.game-grid-container {
+  width: 100%;
+  min-height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  border: 2px dashed var(--cell-border);
+  color: var(--text-color);
+  font-size: 1.5rem; 
+}
+
+.game-grid {
+  display: grid;
+  /* 9 колонок одинаковой ширины */
+  grid-template-columns: repeat(9, 1fr);
+  gap: 4px; /* Небольшой отступ между ячейками */
+  width: 100%;
+  max-width: 600px; /* Ограничиваю максимальную ширину */
+  padding: 10px;
+  background-color: var(--cell-border);
+  border-radius: 4px;
+}
+
+.cell {
+  aspect-ratio: 1 / 1; /* Делаю ячейки квадратными */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  background-color: var(--cell-bg);
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none; /* Запрещаю выделение текста в ячейке */
+  transition: transform 0.1s ease, background-color 0.2s ease;
+}
+
+.cell:hover:not(.empty) {
+  transform: scale(1.05);
+  background-color: var(--cell-hover-bg);
+}
+
+.cell.selected {
+  /* background-color: var(--btn-color);*/
+  transform: scale(1.1);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
+}
+
+.cell.empty {
+  background-color: transparent;
+  cursor: default;
+  pointer-events: none; /* Запрещаю кликать по пустым ячейкам */
+}
+
+.game-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3em;
+}
+
+.game-btn-container {
+  display: flex;
+  gap: 25px
+}
+
+.btn-game {
+  padding: 18px 24px;
+  font-size: 1.2rem;
+  
+  color: var(--text-color);
+}
+
+.game-grid + .btn-manager-container {
+  flex-direction: column;
+}
