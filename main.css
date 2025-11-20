@@ -21,8 +21,10 @@ li {
     --cell-bg: #ffffff;
     --cell-hover-bg: #f2b7b8;
     --cell-border: #dddddd;
+    --button-text-color: #1c1e21;
     --button-bg: #d1d1d1;
     --button-hover-bg: #2faf31;
+    --select: #ffffff;
 }
 
 /* Темная тема */
@@ -30,10 +32,12 @@ li {
   --bg-color: #333333;
   --text-color: #e4e4e4;
   --primary-color: #2a9e2c;
-  --cell-bg: #3a3b3c;
+  --cell-bg: #ffffff;
   --cell-border: #565656;
-  --button-bg: #3a3b3c;
-  --button-hover-bg: #4e4f50;   
+  --button-text-color: #1c1e21;
+  --button-bg: /* #3a3b3c;*/ #d1d1d1;
+  --button-hover-bg: #2faf31;
+  --select: #3a3b3c;   
 }
 
 body {
@@ -59,7 +63,7 @@ body {
   border: none;
   border-radius: 6px;
   background-color: var(--button-bg);
-  color: var(--text-color);
+  color: var(--button-text-color);
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -126,13 +130,13 @@ body {
 }
 
 [data-state="disabled"] {
-  background-color: #cccccc; /* Серый фон */
-    color: #666666;             /* Серый текст */
-    cursor: not-allowed;        /* Курсор "запрещено" */
-    opacity: 0.3;               /* Сделать немного прозрачной */
-    /* Убрать возможность наведения/клика для событий мыши, 
-       хотя disabled и так это делает, это хорошая практика */
-    pointer-events: none;
+  color: #666666;             /* Серый текст */
+  cursor: not-allowed;        /* Курсор "запрещено" */
+  opacity: 0.3;               /* Сделать немного прозрачной */
+  /* Убрать возможность наведения/клика для событий мыши, 
+    хотя disabled и так это делает, это хорошая практика 
+  */
+  pointer-events: none;
 }
 
 
@@ -184,7 +188,7 @@ select {
   padding: 8px;
   border-radius: 4px;
   border: 1px solid var(--cell-border);
-  background-color: var(--cell-bg);
+  background-color: var(--select);
   color: var(--text-color);
   font-size: 1rem;
   cursor: pointer;
@@ -319,7 +323,7 @@ tr {
   padding: 18px 24px;
   font-size: 1.2rem;
   
-  color: var(--text-color);
+  color: var(--button-text-color);
 }
 
 .game-grid + .btn-manager-container {
