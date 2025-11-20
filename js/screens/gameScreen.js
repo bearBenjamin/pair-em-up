@@ -64,9 +64,16 @@ export function renderGameScreen(state) {
   console.log('gridElement: ', gridElement);
 
    // Кнопки управления
-  const btnSetting = createElement('button', { className: 'btn btn-manager' }, 'Setting');
-  const btnContinue = createElement('button', { className: 'btn btn-manager' }, 'Continue');
-  const btnResult = createElement('button', { className: 'btn btn-manager' }, 'Result');
+  const btnSetting = createElement('button', { className: 'btn btn-manager', 'data-action': 'open-setting-screen' }, 'Setting');
+  const btnContinue = createElement('button', 
+    { 
+      className: 'btn btn-manager',
+      'data-action': 'open-continue-game',
+      'data-state': 'disabled',
+      disabled: 'true',
+    },
+  'Continue');
+  const btnResult = createElement('button', { className: 'btn btn-manager', 'data-action': 'open-result-screen' }, 'Result');
 
   const btnManagerChildrens = [btnSetting, btnContinue, btnResult];
 
@@ -77,11 +84,11 @@ export function renderGameScreen(state) {
   const main = createElement('main', { className: 'game' }, gridContainer);
 
   // Вспомогательные кнопки
-  const btnHints = createElement('button', { className: 'btn btn-game btn-hints' }, 'Hints');
-  const btnBackspace = createElement('button', { className: 'btn btn-game btn-backspace' }, 'Backspace');
-  const btnAdd = createElement('button', { className: 'btn btn-game btn-add' }, 'Add Numbers');
-  const btnShuffle = createElement('button', { className: 'btn btn-game btn-shuffle' }, 'Shuffle');
-  const btnEraser = createElement('button', { className: 'btn btn-game btn-eraser' }, 'Eraser');
+  const btnHints = createElement('button', { className: 'btn btn-game btn-hints', 'data-action': 'hints' }, 'Hints');
+  const btnBackspace = createElement('button', { className: 'btn btn-game btn-backspace', 'data-action': 'backspace' }, 'Backspace');
+  const btnAdd = createElement('button', { className: 'btn btn-game btn-add', 'data-action': 'add' }, 'Add Numbers');
+  const btnShuffle = createElement('button', { className: 'btn btn-game btn-shuffle', 'data-action': 'shuffle' }, 'Shuffle');
+  const btnEraser = createElement('button', { className: 'btn btn-game btn-eraser', 'data-action': 'eraser' }, 'Eraser');
 
   const btnChildrens = [btnHints, btnBackspace, btnAdd, btnShuffle, btnEraser];
 

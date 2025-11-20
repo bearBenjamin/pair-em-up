@@ -125,6 +125,16 @@ body {
    font-weight: bold; 
 }
 
+[data-state="disabled"] {
+  background-color: #cccccc; /* Серый фон */
+    color: #666666;             /* Серый текст */
+    cursor: not-allowed;        /* Курсор "запрещено" */
+    opacity: 0.3;               /* Сделать немного прозрачной */
+    /* Убрать возможность наведения/клика для событий мыши, 
+       хотя disabled и так это делает, это хорошая практика */
+    pointer-events: none;
+}
+
 
 /* стили экрана Settings */
 .setting-screen,
