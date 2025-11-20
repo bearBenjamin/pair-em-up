@@ -1,10 +1,6 @@
-import { createElement, getGrid } from "../utils.js";
-import { renderGameScreen } from "./gameScreen.js";
-import { renderSettingScreen } from "./settingScreen.js";
-import { renderResultScreen } from "./resultScreen.js";
+import { createElement } from "../utils.js";
 
-export function renderStarScreen(state) {
-  console.log('state startScreen: ', state);
+export function renderStarScreen() {
   document.body.innerHTML = "";
   const title = createElement("h1", { className: "site-title" }, "Pair 'em Up");
   const authorLink = createElement(
@@ -21,17 +17,23 @@ export function renderStarScreen(state) {
 
   const btnClassicMode = createElement(
     "button",
-    { className: "btn btn-mode-game" },
+    { className: "btn btn-mode-game",
+      'data-action': 'open-classic-screen',
+    },
     "Classic"
   );
   const btnRandomMode = createElement(
     "button",
-    { className: "btn btn-mode-game" },
+    { className: "btn btn-mode-game",
+      'data-action': 'open-random-screen',
+    },
     "Random"
   );
   const btnChaoticMode = createElement(
     "button",
-    { className: "btn btn-mode-game" },
+    { className: "btn btn-mode-game",
+      'data-action': 'open-chaotic-screen',
+    },
     "Chaotic"
   );
 
@@ -45,17 +47,25 @@ export function renderStarScreen(state) {
 
   const btnSettings = createElement(
     "button",
-    { className: "btn btn-manager" },
+    { className: "btn btn-manager",
+      'data-action': 'open-setting-screen',
+    },
     "Settings"
   );
   const btnContunie = createElement(
     "button",
-    { className: "btn btn-manager" },
+    { className: "btn btn-manager",
+      'data-action': 'open-continue-game',
+      'data-state': 'disabled',
+      disabled: 'true',
+    },
     "Continue"
   );
   const btnResult = createElement(
     "button",
-    { className: "btn btn-manager" },
+    { className: "btn btn-manager",
+      'data-action': 'open-result-screen',
+    },
     "Result"
   );
 
@@ -76,59 +86,4 @@ export function renderStarScreen(state) {
   );
 
   document.body.append(pageContainer);
-
-  const modeBtns = document.querySelectorAll(".btn-mode-game");
-  const managerBtns = document.querySelectorAll('.btn-manager');
-
-  modeBtns.forEach((btnMode) => {
-    btnMode.addEventListener("click", (evt) => {
-      handleBtnModeClick(evt, state);
-    });
-  });
-
-  managerBtns.forEach((btnManager) => {
-    btnManager.addEventListener('click', (evt) => {
-      state.currentScreen = 'setting';
-      switch (evt.target.textContent) {
-        case 'Settings' :
-          renderSettingScreen(state);
-        break;
-
-        case 'Result' :
-          renderResultScreen(state);
-      }
-    })
-  })
-}
-
-function handleBtnModeClick (evt, state) {
-  state.currentScreen = "game";
-  switch (evt.target.textContent) {
-    case "Classic":
-      state.mode = "classic";
-      state.grid = getGrid(state.mode);
-      console.log('state.grid: ', state.grid);
-      state.selectedCells = state.grid.map((item, index) => index);
-      renderGameScreen(state);
-    break;
-
-    case "Random":
-      state.mode = "random";
-      state.grid = getGrid(state.mode);
-      state.selectedCells = state.grid.map((item, index) => index);
-      renderGameScreen(state);
-    break;
-
-    case "Chaotic":
-      state.mode = "chaotic";
-      state.grid = getGrid(state.mode);
-      state.selectedCells = state.grid.map((item, index) => index);
-      renderGameScreen(state);
-    break;
-
-    default:
-      state.currentScreen = "start";
-      state.mode = null;
-    break;
-  }
 }
