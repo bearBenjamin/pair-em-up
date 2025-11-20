@@ -15,6 +15,10 @@ export function listenersEvent(state) {
         handleBtnBackClik(evt, state);
         handleBtnGameClick(evt, state);
     });
+
+    body.addEventListener('change', (evt) => {
+        handleToggleTheme(evt, state);
+    })
 }
 
 function handleBtnModeClick(evt, state) {
@@ -84,5 +88,21 @@ function handleBtnGameClick(evt, state) {
         case 'eraser' :
             console.log('eraser');
         break;
+    }
+}
+
+function handleToggleTheme(evt, state) {
+    if (evt.target.value === 'on') {
+        return;
+    }
+    
+    if (evt.target.value === 'dark') {
+        body.setAttribute('data-theme', 'dark');
+        state.setting.theme = 'dark';
+        console.log('state: ', state);
+    } else {
+        body.setAttribute('data-theme', 'light');
+        state.setting.theme = 'light';
+        console.log('state: ', state);
     }
 }
