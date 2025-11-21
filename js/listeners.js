@@ -7,12 +7,11 @@ import { getGrid } from './utils.js';
 const body = document.body;
 
 export function listenersEvent(state) {
-    console.log('body: ', body);
-
     body.addEventListener('click', (evt) => {
         handleBtnModeClick(evt, state);
         handleBtnManagerClick(evt, state);
         handleBtnBackClik(evt, state);
+        handleBtnManagerGameClick(evt, state);
         handleBtnGameClick(evt, state);
     });
 
@@ -28,7 +27,6 @@ function handleBtnModeClick(evt, state) {
         case 'open-classic-screen' :
             state.mode = "classic";
             state.grid = getGrid(state.mode);
-            console.log('state.grid: ', state.grid);
             state.selectedCells = state.grid.map((item, index) => index);
             renderGameScreen(state);
         break;
@@ -65,6 +63,22 @@ function handleBtnBackClik(evt, state) {
     if (evt.target.className.split(' ')[1] === 'btn-back-start') {
         renderStarScreen(state);
     }   
+}
+
+function handleBtnManagerGameClick(evt, state) {
+    switch(evt.target.getAttribute('data-action')) {
+        case 'reset-game' :
+            console.log('reset');
+        break;
+
+        case 'continue-game' :
+            console.log('continue');
+        break;
+
+        case 'save-game' :
+            console.log('save');
+        break;
+    }
 }
 
 function handleBtnGameClick(evt, state) {

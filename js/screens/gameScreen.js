@@ -64,18 +64,18 @@ export function renderGameScreen(state) {
   console.log('gridElement: ', gridElement);
 
    // Кнопки управления
-  const btnSetting = createElement('button', { className: 'btn btn-manager', 'data-action': 'open-setting-screen' }, 'Setting');
+  const btnReset = createElement('button', { className: 'btn btn-manager-game', 'data-action': 'reset-game' }, 'Reset game');
   const btnContinue = createElement('button', 
     { 
-      className: 'btn btn-manager',
-      'data-action': 'open-continue-game',
+      className: 'btn btn-manager-game',
+      'data-action': 'continue-game',
       'data-state': 'disabled',
       disabled: 'true',
     },
-  'Continue');
-  const btnResult = createElement('button', { className: 'btn btn-manager', 'data-action': 'open-result-screen' }, 'Result');
+  'Continue game');
+  const btnSave = createElement('button', { className: 'btn btn-manager-game', 'data-action': 'save-game' }, 'Save game');
 
-  const btnManagerChildrens = [btnSetting, btnContinue, btnResult];
+  const btnManagerChildrens = [btnReset, btnContinue, btnSave];
 
   const btnManagerContainer = createElement('div', { className: 'btn-manager-container' }, ...btnManagerChildrens);
 
