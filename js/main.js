@@ -28,10 +28,10 @@ import { getState } from "./state.js";
 // };
 
 const init = () => {
-  const state = getState();
-  console.log('state: ', state);
+  const currentState = getState();
+  console.log('currentState: ', currentState);
   renderStarScreen();
-  listenersEvent(state);
+  listenersEvent(currentState);
 };
 
 

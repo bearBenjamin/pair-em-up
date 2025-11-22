@@ -25,7 +25,7 @@ export function createElement(tag, attributes = {}, ...childrens) {
 }
 
 export function getGrid(mode) {
-  console.log('mode: ', mode);
+  // console.log('mode: ', mode);
   let grid;
   switch (mode) {
     case 'classic':

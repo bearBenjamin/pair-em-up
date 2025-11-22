@@ -287,6 +287,8 @@ tr {
   cursor: pointer;
   user-select: none; /* Запрещаю выделение текста в ячейке */
   transition: transform 0.1s ease, background-color 0.2s ease;
+  transform: scale(1.1);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
 }
 
 .cell:hover:not(.empty) {
@@ -295,15 +297,14 @@ tr {
 }
 
 .cell.selected {
-  /* background-color: var(--btn-color);*/
-  transform: scale(1.1);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
+  background-color: #AED0F8;
 }
 
 .cell.empty {
   background-color: transparent;
   cursor: default;
   pointer-events: none; /* Запрещаю кликать по пустым ячейкам */
+  box-shadow: 0 0 0 0;
 }
 
 .game-footer {
