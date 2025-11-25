@@ -1,7 +1,7 @@
 import { createElement } from "../utils.js";
 
 export function renderGameScreen(state) {
-    console.log('state game screen: ', state);
+  // console.log('state game screen: ', state);
   document.body.innerHTML = '';
 
   const { mode, timer, score, grid, selectedCells } = state;
@@ -61,21 +61,21 @@ export function renderGameScreen(state) {
 
   // Игровое поле
   const gridElement = renderGrid(grid, selectedCells);
-  console.log('gridElement: ', gridElement);
+  // console.log('gridElement: ', gridElement);
 
    // Кнопки управления
-  const btnSetting = createElement('button', { className: 'btn btn-manager', 'data-action': 'open-setting-screen' }, 'Setting');
+  const btnReset = createElement('button', { className: 'btn btn-manager-game', 'data-action': 'reset-game' }, 'Reset game');
   const btnContinue = createElement('button', 
     { 
-      className: 'btn btn-manager',
-      'data-action': 'open-continue-game',
+      className: 'btn btn-manager-game',
+      'data-action': 'continue-game',
       'data-state': 'disabled',
       disabled: 'true',
     },
-  'Continue');
-  const btnResult = createElement('button', { className: 'btn btn-manager', 'data-action': 'open-result-screen' }, 'Result');
+  'Continue game');
+  const btnSave = createElement('button', { className: 'btn btn-manager-game', 'data-action': 'save-game' }, 'Save game');
 
-  const btnManagerChildrens = [btnSetting, btnContinue, btnResult];
+  const btnManagerChildrens = [btnReset, btnContinue, btnSave];
 
   const btnManagerContainer = createElement('div', { className: 'btn-manager-container' }, ...btnManagerChildrens);
 
@@ -103,6 +103,7 @@ export function renderGameScreen(state) {
 
 
 function renderGrid(grid, selectedCells) {
+  console.log('selectedCells: ', selectedCells)
     const gridElement = createElement('div', { className: 'game-grid' });
     
     grid.forEach((cellValue, index) => {
@@ -110,11 +111,11 @@ function renderGrid(grid, selectedCells) {
      // if (grid.length > 0 && index >= grid.length && !cellValue) return;
 
       const isCellEmpty = !cellValue;
-      const isCellSelected = selectedCells.includes(index);
+      //const isCellSelected = selectedCells.includes(index);
 
     // Создаю ячейку
       const cell = createElement('div', {
-        className: `cell ${isCellEmpty ? 'empty' : ''} ${isCellSelected ? 'selected' : ''}`,
+        className: `cell ${isCellEmpty ? 'empty' : ''}`,
         'data-index': index,
         'data-action': 'select-cell',
         textContent: isCellEmpty ? '' : cellValue,
