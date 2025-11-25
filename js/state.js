@@ -17,6 +17,8 @@ const state = {
   },
   history: [], // история ходов;
   hasSavedGame: false,
+  firstClick: null,
+  secondClick: null,
   selectedCells: [], // массив индексов выделенных ячеек
 };
 
