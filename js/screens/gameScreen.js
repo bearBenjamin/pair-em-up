@@ -96,7 +96,14 @@ export function renderGameScreen(state) {
 
   const footer = createElement('footer', { className: 'game-footer' }, btnContainer);
 
-  const container = createElement('div', { className: 'wrapper game-screen' }, header, main, footer);
+  // Модальное окно
+  const btnCloseModal = createElement('button', { className: 'btn modal-close-button' }, 'Close');
+  const modalMessage = createElement('p', { className: 'modal-message'});
+  const modal = createElement('div', { className: 'modal' }, modalMessage, btnCloseModal);
+  
+  const modalContainer = createElement('div', { className: 'modal-overlay visually-hidden' }, modal);
+
+  const container = createElement('div', { className: 'wrapper game-screen' }, header, main, footer, modalContainer);
 
   document.body.append(container);
 }

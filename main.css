@@ -50,6 +50,19 @@ body {
     color: var(--text-color);
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
 /* основной контейнер содержимого страницы */
 .wrapper {
     max-width: 1280px;
@@ -307,6 +320,25 @@ tr {
   box-shadow: 0 0 0 0;
 }
 
+.cell.hint {
+  border: 2px solid #019d01;
+  background-color: rgba(144, 238, 144, 0.3);
+  cursor: pointer;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .game-footer {
     display: flex;
     flex-direction: column;
@@ -329,4 +361,64 @@ tr {
 
 .game-grid + .btn-manager-container {
   flex-direction: column;
+}
+
+/* Ваш CSS файл */
+
+/* Стили для оверлея (фона) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Поверх всего контента */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+/* Стили для самого окна */
+.modal {
+  background-color: #fff;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 400px;
+  transform: scale(0.8);
+  transition: transform 0.3s ease-in-out;
+}
+
+.modal-message {
+  margin: 0 0 20px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.modal-close-button {
+  padding: 8px 16px;
+  border: none;
+  color: var(--button-text-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+/*.modal-close-button:hover {
+  background-color: #0056b3;
+}*/
+
+/* Класс для показа модального окна */
+.modal-overlay:not(.hidden) {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-overlay:not(.hidden) .modal {
+  transform: scale(1);
 }

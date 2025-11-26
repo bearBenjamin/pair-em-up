@@ -25,7 +25,7 @@ export function createElement(tag, attributes = {}, ...childrens) {
 }
 
 export function getGrid(mode) {
-  // console.log('mode: ', mode);
+  console.log('mode: ', mode);
   let grid;
   switch (mode) {
     case 'classic':
@@ -70,12 +70,27 @@ export function getGrid(mode) {
 }
 
 function shuffleElement(array) {
+  console.log('array: ', array);
   const arr = array.slice().flat();
+  console.log('arr: ', arr);
   
   for (let i = arr.length - 1; i > 0; i -= 1) {
      const j = Math.floor(Math.random() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
-  
+  console.log('arr: ', arr);
   return arr;
+}
+
+export function addMoveToHistory(state, index1, index2, value1, value2, points) {
+  const move = {
+    moveIndex: state.history.length + 1,
+    cell1Index: index1,
+    cell2Index: index2,
+    cell1Value: value1,
+    cell2Value: value2,
+    pointsScored: points,
+    scoreBeforeMove: state.score,
+  };
+  state.history.push(move);
 }

@@ -9,7 +9,7 @@ const state = {
     theme: "light", // 'dark';
   },
   assists: {
-    hints: -1,
+    hints: 5,
     revert: 0,
     addNumbers: 10,
     shuffle: 5,
@@ -17,6 +17,8 @@ const state = {
   },
   history: [], // история ходов;
   hasSavedGame: false,
+  hasHints: false,
+  hasRevertedLastMove: false,
   firstClick: null,
   secondClick: null,
   selectedCells: [], // массив индексов выделенных ячеек

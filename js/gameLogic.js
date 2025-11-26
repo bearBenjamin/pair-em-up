@@ -1,4 +1,6 @@
 import { renderGameScreen } from "./screens/gameScreen.js";
+import { addMoveToHistory } from "./utils.js";
+import { renderHints } from "./btns/btnGame.js";
 
 const GRID_COLUMNS = 9;
 
@@ -48,6 +50,10 @@ function processSelection(state) {
   const { selectedCells, grid } = state;
   const [index1, index2] = selectedCells;
 
+  const value1 = grid[index1];
+  const value2 = grid[index2];
+  const scoreBeforeMove = state.score;
+
   // Проверка возможности соединить ячейки
   if (!areaCellsAdjacent(index1, index2, grid)) {
     console.log('Ячейки не являются смежными');
@@ -56,7 +62,7 @@ function processSelection(state) {
   }
 
   // Проверка валидности пары
-  const { isValid, points } = validatePair(grid[index1], grid[index2]);
+  const { isValid, points } = validatePair(value1, value2);
 
   if(!isValid) {
     console.log('Пара не валидна');
@@ -68,13 +74,22 @@ function processSelection(state) {
   console.log(`Пара валидна! Начислено ${points} очков.`);
   grid[index1] = '';
   grid[index2] = '';
-  state.score += points;
+  state.score = scoreBeforeMove + points;
+
+  state.hasRevertedLastMove = false;
+
+  if (state.hintsActive) {
+    state.hintsActive = false;
+    renderHints([], false);
+  }
+
+  addMoveToHistory(state, index1, index2, value1, value2, points); // записываю ход в историю
   resetSelection(state); // Сбрасываю после успешной обработки
 
   return renderGameScreen(state);
 }
 
-function resetSelection(state) {
+export function resetSelection(state) {
   document.querySelectorAll('.cell.selected').forEach((cell) => cell.classList.remove('selected'));
   state.firstClick = null;
   state.secondClick = null;
@@ -89,7 +104,7 @@ function getSortIndex(index1, index2) {
     return [indexOne, indexTwo];
 }
 
-function areaCellsAdjacent(index1, index2, grid) {
+export function areaCellsAdjacent(index1, index2, grid) {
   const [indexOne, indexTwo] = getSortIndex(index1, index2);
 
   const { row: row1, col: col1 } = getRowCol(indexOne);
@@ -141,7 +156,7 @@ function areaCellsAdjacent(index1, index2, grid) {
 }
 
 // функция валидации пар и подсчета очков
-function validatePair (num1, num2) {
+export function validatePair (num1, num2) {
   if (num1 === null || num2 === null) return { isValid: false, points: 0 };
 
   const isIdentical = num1 === num2;
@@ -170,7 +185,7 @@ function getRowCol(index) {
 function findLastNonEmptyCellInRow (row, grid) {
   for (let col = GRID_COLUMNS - 1; col >= 0; col -= 1) {
     const index = row * GRID_COLUMNS + col;
-    console.log('index: ', index);
+
     if (grid[index]) { 
       return index;
     }
