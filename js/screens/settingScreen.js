@@ -1,8 +1,8 @@
 import { createElement } from "../utils.js";
 
-export function renderSettingScreen (state) {
-    state.currentScreen = 'setting';
-    console.log('state setting screen: ', state);
+export function renderSettingScreen (curentState) {
+    curentState.currentScreen = 'setting';
+    console.log('curentState setting screen: ', curentState);
     document.body.innerHTML = '';
 
     const title = createElement('h1', { className: 'page-title' }, 'Setting');

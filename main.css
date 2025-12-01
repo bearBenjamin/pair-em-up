@@ -363,7 +363,11 @@ tr {
   flex-direction: column;
 }
 
-/* Ваш CSS файл */
+.btn-navigation-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
 
 /* Стили для оверлея (фона) */
 .modal-overlay {

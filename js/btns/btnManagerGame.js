@@ -1,5 +1,5 @@
 
-export function handleBtnManagerGameClick(evt, state) {
+export function handleBtnManagerGameClick(evt, currentState) {
   switch (evt.target.getAttribute("data-action")) {
     case "reset-game":
       console.log("reset");

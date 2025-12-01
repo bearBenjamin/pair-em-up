@@ -1,107 +1,109 @@
-import { renderGameScreen } from "./screens/gameScreen.js";
+import { renderGameScreen } from "./screens/gameScreen/gameScreen.js";
 import { addMoveToHistory } from "./utils.js";
 import { renderHints } from "./btns/btnGame.js";
 
 const GRID_COLUMNS = 9;
 
-export function handleGameFieldClick(evt, state) {
-  const cell = evt.target.closest('[data-index]');
-  
+export function handleGameFieldClick(evt, curentState) {
+  const cell = evt.target.closest("[data-index]");
+
   if (!cell) return;
 
-  const index = parseInt(cell.getAttribute('data-index'), 10); // индекс ячейки
-  const { grid } = state;
+  const index = parseInt(cell.getAttribute("data-index"), 10); // индекс ячейки
+  const { grid } = curentState;
 
-  if(!grid[index]) return // Если ячейка пуста ничего не делаю
+  if (!grid[index]) return; // Если ячейка пуста ничего не делаю
 
-  const { firstClick, secondClick } = state;
+  const { firstClick, secondClick } = curentState;
 
   if (firstClick === null) {
-    state.firstClick = index;
-    state.selectedCells.push(index);
-    cell.classList.add('selected');
+    curentState.firstClick = index;
+    curentState.selectedCells.push(index);
+    cell.classList.add("selected");
   } else if (secondClick === null) {
     if (index === firstClick) {
       // Отмена первого выделения
-      cell.classList.remove('selected');
-      state.firstClick = null;
-      state.selectedCells.length = 0;
+      cell.classList.remove("selected");
+      curentState.firstClick = null;
+      curentState.selectedCells.length = 0;
     } else {
-      // Второе выделение 
-      state.secondClick = index;
-      state.selectedCells.push(index);
-      cell.classList.add('selected');
+      // Второе выделение
+      curentState.secondClick = index;
+      curentState.selectedCells.push(index);
+      cell.classList.add("selected");
     }
   } else {
     // Третье выделение - сбрасываю предыдущее и начинаю новое
-    resetSelection(state);
-    state.firstClick = index;
-    state.selectedCells.push(index);
-    cell.classList.add('selected');
+    resetSelection(curentState);
+    curentState.firstClick = index;
+    curentState.selectedCells.push(index);
+    cell.classList.add("selected");
   }
 
-   // Если выбрано две ячейки, запускаю их обработку
-  if (state.selectedCells.length === 2) {
-    processSelection(state);
+  // Если выбрано две ячейки, запускаю их обработку
+  if (curentState.selectedCells.length === 2) {
+    processSelection(curentState);
   }
 }
 
-function processSelection(state) {
-  const { selectedCells, grid } = state;
+function processSelection(curentState) {
+  const { selectedCells, grid } = curentState;
   const [index1, index2] = selectedCells;
 
   const value1 = grid[index1];
   const value2 = grid[index2];
-  const scoreBeforeMove = state.score;
+  const scoreBeforeMove = curentState.score;
 
   // Проверка возможности соединить ячейки
   if (!areaCellsAdjacent(index1, index2, grid)) {
-    console.log('Ячейки не являются смежными');
-    resetSelection(state);
-    return renderGameScreen(state);
+    console.log("Ячейки не являются смежными");
+    resetSelection(curentState);
+    return renderGameScreen(curentState);
   }
 
   // Проверка валидности пары
   const { isValid, points } = validatePair(value1, value2);
 
-  if(!isValid) {
-    console.log('Пара не валидна');
-    resetSelection(state);
-    return renderGameScreen(state);
+  if (!isValid) {
+    console.log("Пара не валидна");
+    resetSelection(curentState);
+    return renderGameScreen(curentState);
   }
 
   //  Пара валидна: удаляю ячейки, начисляю очки
   console.log(`Пара валидна! Начислено ${points} очков.`);
-  grid[index1] = '';
-  grid[index2] = '';
-  state.score = scoreBeforeMove + points;
+  grid[index1] = "";
+  grid[index2] = "";
+  curentState.score = scoreBeforeMove + points;
 
-  state.hasRevertedLastMove = false;
+  curentState.hasRevertedLastMove = false;
 
-  if (state.hintsActive) {
-    state.hintsActive = false;
+  if (curentState.hintsActive) {
+    curentState.hintsActive = false;
     renderHints([], false);
   }
 
-  addMoveToHistory(state, index1, index2, value1, value2, points); // записываю ход в историю
-  resetSelection(state); // Сбрасываю после успешной обработки
+  addMoveToHistory(curentState, index1, index2, value1, value2, points); // записываю ход в историю
+  resetSelection(curentState); // Сбрасываю после успешной обработки
 
-  return renderGameScreen(state);
+  return renderGameScreen(curentState);
 }
 
-export function resetSelection(state) {
-  document.querySelectorAll('.cell.selected').forEach((cell) => cell.classList.remove('selected'));
-  state.firstClick = null;
-  state.secondClick = null;
-  state.selectedCells.length = 0;
+export function resetSelection(curentState) {
+  document
+    .querySelectorAll(".cell.selected")
+    .forEach((cell) => cell.classList.remove("selected"));
+  curentState.firstClick = null;
+  curentState.secondClick = null;
+  curentState.selectedCells.length = 0;
 }
 
 function getSortIndex(index1, index2) {
-  const [idxA, idxB] = [index1, index2].sort((a, b) => (a - b));
+  const [idxA, idxB] = [index1, index2].sort((a, b) => a - b);
 
-    const indexOne = idxA;
-    const indexTwo = idxB;
-    return [indexOne, indexTwo];
+  const indexOne = idxA;
+  const indexTwo = idxB;
+  return [indexOne, indexTwo];
 }
 
 export function areaCellsAdjacent(index1, index2, grid) {
@@ -111,13 +113,13 @@ export function areaCellsAdjacent(index1, index2, grid) {
   const { row: row2, col: col2 } = getRowCol(indexTwo);
 
   // Проверка прямого соседства (горизонталь/вертикаль)
-  const isAdjacentVertically = (Math.abs(row1 - row2) === 1) && (col1 === col2);
-  const isAdjacentHorizontally = (Math.abs(col1 - col2) === 1) && (row1 === row2);
+  const isAdjacentVertically = Math.abs(row1 - row2) === 1 && col1 === col2;
+  const isAdjacentHorizontally = Math.abs(col1 - col2) === 1 && row1 === row2;
 
   if (isAdjacentVertically || isAdjacentHorizontally) {
     return true;
   }
-  
+
   // Проверка на соседство в одной строке через пустые ячейки
   if (row1 === row2) {
     const start = Math.min(indexOne, indexTwo) + 1;
@@ -132,7 +134,7 @@ export function areaCellsAdjacent(index1, index2, grid) {
   if (col1 === col2) {
     const startRow = Math.min(row1, row2) + 1;
     const endRow = Math.max(row1, row2);
-    for (let  i= startRow; i < endRow; i += 1) {
+    for (let i = startRow; i < endRow; i += 1) {
       const cellIndex = i * GRID_COLUMNS + col1;
       if (grid[cellIndex]) return false;
     }
@@ -156,7 +158,7 @@ export function areaCellsAdjacent(index1, index2, grid) {
 }
 
 // функция валидации пар и подсчета очков
-export function validatePair (num1, num2) {
+export function validatePair(num1, num2) {
   if (num1 === null || num2 === null) return { isValid: false, points: 0 };
 
   const isIdentical = num1 === num2;
@@ -173,27 +175,27 @@ export function validatePair (num1, num2) {
   }
 
   return { isValid: false, points: 0 };
-};
+}
 
 function getRowCol(index) {
   return {
     row: Math.floor(index / GRID_COLUMNS),
     col: index % GRID_COLUMNS,
-  }
+  };
 }
 
-function findLastNonEmptyCellInRow (row, grid) {
+function findLastNonEmptyCellInRow(row, grid) {
   for (let col = GRID_COLUMNS - 1; col >= 0; col -= 1) {
     const index = row * GRID_COLUMNS + col;
 
-    if (grid[index]) { 
+    if (grid[index]) {
       return index;
     }
   }
   return null; // Ряд пуст
-};
+}
 
-function findFirstNonEmptyCellInRow (row, grid) {
+function findFirstNonEmptyCellInRow(row, grid) {
   for (let col = 0; col < GRID_COLUMNS; col += 1) {
     const index = row * GRID_COLUMNS + col;
     if (grid[index]) {
@@ -201,4 +203,4 @@ function findFirstNonEmptyCellInRow (row, grid) {
     }
   }
   return null;
-};
+}

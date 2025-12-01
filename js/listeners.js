@@ -8,36 +8,38 @@ import { handleToggleTheme } from "./theme.js";
 
 const body = document.body;
 
-export function listenersEvent(state) {
+export function listenersEvent(currentState) {
   body.addEventListener("click", (evt) => {
     const target = evt.target;
 
     if (target.closest(".btn-mode-game")) {
-      handleBtnModeClick(evt, state);
+      handleBtnModeClick(evt, currentState);
     }
 
     if (target.closest(".btn-manager")) {
-      handleBtnManagerClick(evt, state);
+      handleBtnManagerClick(evt, currentState);
     }
 
     if (target.closest(".btn-back-start")) {
-      handleBtnBackClik(evt, state);
+      handleBtnBackClik(evt, currentState);
     }
 
+    if (target.closest('.btn-navigation'))
+
     if (target.closest(".btn-manager-game")) {
-      handleBtnManagerGameClick(evt, state);
+      handleBtnManagerGameClick(evt, currentState);
     }
 
     if (target.closest(".btn-game")) {
-      handleBtnGameClick(evt, state);
+      handleBtnGameClick(evt, currentState);
     }
 
     if (target.closest(".cell")) {
-      handleGameFieldClick(evt, state);
+      handleGameFieldClick(evt, currentState);
     }
   });
 
   body.addEventListener("change", (evt) => {
-    handleToggleTheme(evt, state);
+    handleToggleTheme(evt, currentState);
   });
 }

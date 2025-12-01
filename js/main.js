@@ -1,5 +1,5 @@
 import { renderStarScreen } from "./screens/startScreen.js";
-import './screens/gameScreen.js';
+import './screens/gameScreen/gameScreen.js';
 import './screens/settingScreen.js';
 import './utils.js';
 import { listenersEvent } from "./listeners.js";

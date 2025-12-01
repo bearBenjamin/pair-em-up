@@ -1,5 +1,7 @@
 import { renderStarScreen } from "../screens/startScreen.js";
 
-export function handleBtnBackClik(state) {
-  renderStarScreen(state);
+function handleBtnBackClik(currentState) {
+  renderStarScreen(currentState);
 }
+
+export { handleBtnBackClik };

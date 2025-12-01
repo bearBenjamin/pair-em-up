@@ -1,9 +1,9 @@
 import { createElement } from "../utils.js";
 import { renderStarScreen } from "./startScreen.js";
 
-export function renderResultScreen(state) {
-    state.currentScreen = 'result';
-    console.log('state result: ', state);
+export function renderResultScreen(curentState) {
+    curentState.currentScreen = 'result';
+    console.log('curentState result: ', curentState);
     document.body.innerHTML = '';
 
     const title = createElement('h1', { className: 'page-title' }, 'Result');

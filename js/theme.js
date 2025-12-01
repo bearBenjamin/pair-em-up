@@ -1,15 +1,15 @@
 const body = document.body;
 
-export function handleToggleTheme(evt, state) {
+export function handleToggleTheme(evt, currentState) {
   if (evt.target.value === "on") {
     return;
   }
 
   if (evt.target.value === "dark") {
     body.setAttribute("data-theme", "dark");
-    state.setting.theme = "dark";
+    currentState.setting.theme = "dark";
   } else {
     body.setAttribute("data-theme", "light");
-    state.setting.theme = "light";
+    currentState.setting.theme = "light";
   }
 }

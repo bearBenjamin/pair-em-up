@@ -1,19 +1,23 @@
-import { renderGameScreen } from "../screens/gameScreen.js";
-import { resetSelection, areaCellsAdjacent, validatePair } from "../gameLogic.js";
+import { renderGameScreen } from "../screens/gameScreen/gameScreen.js";
+import {
+  resetSelection,
+  areaCellsAdjacent,
+  validatePair,
+} from "../gameLogic.js";
 import { showModal } from "../screens/modalScreen.js";
 
 // блок Hints
 const NUM_HINTS = 5;
 // блок Hints
 
-export function handleBtnGameClick(evt, state) {
+export function handleBtnGameClick(evt, currentState) {
   switch (evt.target.getAttribute("data-action")) {
     case "hints":
-      handleHintBtnClick(state);
+      handleHintBtnClick(currentState);
       break;
 
     case "backspace":
-      handleBackspaceClick(state);
+      handleBackspaceClick(currentState);
       break;
 
     case "add":
@@ -31,59 +35,58 @@ export function handleBtnGameClick(evt, state) {
 }
 
 // начало блока Backspace;
-function handleBackspaceClick(state) {
-    if (state.history.length === 0) {
-      console.log('История пуста, откат невозможен');
-      return;
-    }
-
-    if (state.hasRevertedLastMove) {
-      console.log('Откат уже был использован. Сдеалайте новый ход.');
-      return;
-    }
-
-    const lastMove = state.history.pop();
-
-    const { cell1Index, cell2Index, cell1Value, cell2Value, pointsScored } = lastMove;
-
-    state.grid[cell1Index] = cell1Value;
-    state.grid[cell2Index] = cell2Value;
-    state.score = state.score - pointsScored;
-
-    state.hasRevertedLastMove = true;
-    resetSelection(state);
-    renderGameScreen(state);
-}
-// конец блока Backspace;
-
-
-// начало блока Hints;
-function handleHintBtnClick (state) {
-  const { grid } = state;
-
-  if (state.assists.hints === 0) {
-    showModal('The hints have run out.');
+function handleBackspaceClick(currentState) {
+  if (currentState.history.length === 0) {
+    console.log("История пуста, откат невозможен");
     return;
   }
 
-  state.hintsActive = !state.hintsActive;
+  if (currentState.hasRevertedLastMove) {
+    console.log("Откат уже был использован. Сдеалайте новый ход.");
+    return;
+  }
 
-  if(state.hintsActive) {
+  const lastMove = currentState.history.pop();
+
+  const { cell1Index, cell2Index, cell1Value, cell2Value, pointsScored } =
+    lastMove;
+
+  currentState.grid[cell1Index] = cell1Value;
+  currentState.grid[cell2Index] = cell2Value;
+  currentState.score = currentState.score - pointsScored;
+
+  currentState.hasRevertedLastMove = true;
+  resetSelection(currentState);
+  renderGameScreen(currentState);
+}
+// конец блока Backspace;
+
+// начало блока Hints;
+function handleHintBtnClick(currentState) {
+  const { grid } = currentState;
+
+  if (currentState.assists.hints === 0) {
+    showModal("The hints have run out.");
+    return;
+  }
+
+  currentState.hintsActive = !currentState.hintsActive;
+
+  if (currentState.hintsActive) {
     const hints = getAllHints(grid);
-    console.log('currentHints: ', hints);
+    console.log("currentHints: ", hints);
 
     if (hints.length === 0) {
-      showModal('There are no available moves on the field!');
-      state.hintsActive = false;
+      showModal("There are no available moves on the field!");
+      currentState.hintsActive = false;
       return;
     }
 
-    state.assists.hints -= 1;
-    console.log('state.assists.hints: ', state.assists.hints);
+    currentState.assists.hints -= 1;
+    console.log("currentState.assists.hints: ", currentState.assists.hints);
 
     renderHints(hints, true);
   }
- 
 }
 
 function getAllHints(grid) {
@@ -103,7 +106,7 @@ function getAllHints(grid) {
 
       const value1 = grid[index1];
       const value2 = grid[index2];
-      
+
       const { isValid } = validatePair(value1, value2);
 
       if (isValid) {
@@ -121,8 +124,8 @@ function getAllHints(grid) {
 }
 
 export function renderHints(shuffleCurrenHints, isShow) {
-  document.querySelectorAll('.cell.hint').forEach((cell) => {
-    cell.classList.remove('hint');
+  document.querySelectorAll(".cell.hint").forEach((cell) => {
+    cell.classList.remove("hint");
   });
 
   if (!isShow || shuffleCurrenHints.length === 0) {
@@ -131,24 +134,27 @@ export function renderHints(shuffleCurrenHints, isShow) {
 
   const hintedCells = new Set(shuffleCurrenHints.flat());
 
-  document.querySelectorAll('.cell').forEach((cell) => {
-    const index = parseInt(cell.getAttribute('data-index'), 10);
+  document.querySelectorAll(".cell").forEach((cell) => {
+    const index = parseInt(cell.getAttribute("data-index"), 10);
     if (hintedCells.has(index)) {
-      cell.classList.add('hint');
+      cell.classList.add("hint");
     }
   });
 }
 
-function shuffleHints (hints) {
+function shuffleHints(hints) {
   const arr = [...hints];
   let currentIndex = arr.length;
   let randomIndex;
 
-  while(currentIndex !== 0) {
+  while (currentIndex !== 0) {
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
 
-    [arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]];
+    [arr[currentIndex], arr[randomIndex]] = [
+      arr[randomIndex],
+      arr[currentIndex],
+    ];
   }
   return arr;
 }
