@@ -1,6 +1,6 @@
 import { createElement } from "../utils.js";
 
-export function renderStarScreen() {
+function renderStarScreen() {
   document.body.innerHTML = "";
   const title = createElement("h1", { className: "site-title" }, "Pair 'em Up");
   const authorLink = createElement(
@@ -87,3 +87,5 @@ export function renderStarScreen() {
 
   document.body.append(pageContainer);
 }
+
+export { renderStarScreen }

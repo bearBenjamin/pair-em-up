@@ -1,15 +1,19 @@
+import { setTheme } from "./state.js";
+
 const body = document.body;
 
-export function handleToggleTheme(evt, state) {
+function handleToggleTheme(evt) {
   if (evt.target.value === "on") {
     return;
   }
 
   if (evt.target.value === "dark") {
     body.setAttribute("data-theme", "dark");
-    state.setting.theme = "dark";
+    setTheme('dark');
   } else {
     body.setAttribute("data-theme", "light");
-    state.setting.theme = "light";
+    setTheme('light');
   }
 }
+
+export { handleToggleTheme };

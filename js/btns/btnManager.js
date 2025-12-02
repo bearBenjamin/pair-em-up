@@ -1,14 +1,15 @@
-import { renderSettingScreen } from "../screens/settingScreen.js";
-import { renderResultScreen } from "../screens/resultScreen.js";
+import { setCurrentScreen } from "../state.js";
 
-export function handleBtnManagerClick(evt, state) {
+function handleBtnManagerClick(evt) {
   switch (evt.target.getAttribute("data-action")) {
     case "open-setting-screen":
-      renderSettingScreen(state);
+      setCurrentScreen('setting');
       break;
 
     case "open-result-screen":
-      renderResultScreen(state);
+      setCurrentScreen('result');
       break;
   }
 }
+
+export { handleBtnManagerClick };

@@ -1,5 +1,7 @@
-import { renderStarScreen } from "../screens/startScreen.js";
+import { setCurrentScreen } from "../state.js";
 
-export function handleBtnBackClik(state) {
-  renderStarScreen(state);
+function handleBtnBackClik() {
+  setCurrentScreen('start');
 }
+
+export { handleBtnBackClik };
