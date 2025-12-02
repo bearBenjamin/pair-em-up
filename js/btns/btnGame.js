@@ -1,9 +1,5 @@
 import { renderGameScreen } from "../screens/gameScreen/gameScreen.js";
-import {
-  resetSelection,
-  areaCellsAdjacent,
-  validatePair,
-} from "../gameLogic.js";
+import { resetSelection, areaCellsAdjacent, validatePair } from "../gameLogic.js";
 import { showModal } from "../screens/modalScreen.js";
 
 // блок Hints
@@ -21,15 +17,15 @@ export function handleBtnGameClick(evt, currentState) {
       break;
 
     case "add":
-      console.log("add");
+      handleAddClick(currentState);
       break;
 
     case "shuffle":
-      console.log("shuffle");
+      handleShuffleClick(currentState);
       break;
 
     case "eraser":
-      console.log("eraser");
+      handleEraserClick(currentState);
       break;
   }
 }
@@ -42,7 +38,7 @@ function handleBackspaceClick(currentState) {
   }
 
   if (currentState.hasRevertedLastMove) {
-    console.log("Откат уже был использован. Сдеалайте новый ход.");
+    console.log("Откат уже был использован. Сделайте новый ход.");
     return;
   }
 
@@ -74,7 +70,6 @@ function handleHintBtnClick(currentState) {
 
   if (currentState.hintsActive) {
     const hints = getAllHints(grid);
-    console.log("currentHints: ", hints);
 
     if (hints.length === 0) {
       showModal("There are no available moves on the field!");
@@ -83,7 +78,6 @@ function handleHintBtnClick(currentState) {
     }
 
     currentState.assists.hints -= 1;
-    console.log("currentState.assists.hints: ", currentState.assists.hints);
 
     renderHints(hints, true);
   }
@@ -159,3 +153,39 @@ function shuffleHints(hints) {
   return arr;
 }
 // конец блока Hints;
+
+// начало блока Add;
+function handleAddClick(currentState) {
+  console.log('currentState: ', currentState);
+  const notEmptyGrid = currentState.grid.filter(Boolean);
+  const { grid } = currentState;
+  console.log('grid: ', grid);
+  const newGrid = [...grid, ...notEmptyGrid];
+  console.log('newGrid: ', newGrid);
+  currentState.grid = newGrid;
+  renderGameScreen(currentState);
+}
+// конец блока Add;
+
+
+// начало блока Shuffle
+function handleShuffleClick(currentState) {
+  const newGrid = currentState.grid;
+  console.log('newGrid: ', newGrid);
+  for (let i = newGrid.length - 1; i > 0; i -= 1) {
+     const j = Math.floor(Math.random() * (i + 1));
+    [newGrid[i], newGrid[j]] = [newGrid[j], newGrid[i]];
+  }
+  console.log('newGrid: ', newGrid);
+  currentState.grid = newGrid;
+  renderGameScreen(currentState);
+}
+// конец блока Shuffle;
+
+// начало блока Eraser
+export function handleEraserClick(currentState) {
+  const cellSellected = document.querySelector('.cell.selected');
+  const index = cellSellected.getAttribute('data-index');
+  currentState.grid[index] = '';
+  renderGameScreen(currentState);
+}

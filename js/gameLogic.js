@@ -1,15 +1,16 @@
 import { renderGameScreen } from "./screens/gameScreen/gameScreen.js";
 import { addMoveToHistory } from "./utils.js";
-import { renderHints } from "./btns/btnGame.js";
+import { handleEraserClick, renderHints } from "./btns/btnGame.js";
 
 const GRID_COLUMNS = 9;
 
 export function handleGameFieldClick(evt, curentState) {
   const cell = evt.target.closest("[data-index]");
-
+  
   if (!cell) return;
 
   const index = parseInt(cell.getAttribute("data-index"), 10); // индекс ячейки
+
   const { grid } = curentState;
 
   if (!grid[index]) return; // Если ячейка пуста ничего не делаю
@@ -54,7 +55,13 @@ function processSelection(curentState) {
   const value2 = grid[index2];
   const scoreBeforeMove = curentState.score;
 
+  console.log('index1: ', index1);
+  console.log('index2: ', index2);
+  console.log('value1: ', value1);
+  console.log('value2: ', value2);
+
   // Проверка возможности соединить ячейки
+  console.log('areaCellsAdjancent: ', areaCellsAdjacent(index1, index2, grid));
   if (!areaCellsAdjacent(index1, index2, grid)) {
     console.log("Ячейки не являются смежными");
     resetSelection(curentState);
@@ -100,7 +107,6 @@ export function resetSelection(curentState) {
 
 function getSortIndex(index1, index2) {
   const [idxA, idxB] = [index1, index2].sort((a, b) => a - b);
-
   const indexOne = idxA;
   const indexTwo = idxB;
   return [indexOne, indexTwo];
@@ -136,6 +142,7 @@ export function areaCellsAdjacent(index1, index2, grid) {
     const endRow = Math.max(row1, row2);
     for (let i = startRow; i < endRow; i += 1) {
       const cellIndex = i * GRID_COLUMNS + col1;
+      // console.log('cellIndex: ', cellIndex);
       if (grid[cellIndex]) return false;
     }
     return true;
@@ -151,6 +158,11 @@ export function areaCellsAdjacent(index1, index2, grid) {
     (indexOne === lastInUpperRow && indexTwo === firstInLowerRow) ||
     (indexTwo === lastInUpperRow && indexOne === firstInLowerRow)
   ) {
+    const start = Math.min(indexOne, indexTwo) + 1;
+    const end = Math.max(indexOne, indexTwo);
+    for (let i = start; i < end; i += 1) {
+      if (grid[i]) return false; //если между ячейками есть не пустая ячейка
+    }
     return true;
   }
 
@@ -194,7 +206,7 @@ function findLastNonEmptyCellInRow(row, grid) {
   }
   return null; // Ряд пуст
 }
-
+console.log('* * * * *');
 function findFirstNonEmptyCellInRow(row, grid) {
   for (let col = 0; col < GRID_COLUMNS; col += 1) {
     const index = row * GRID_COLUMNS + col;

@@ -1,7 +1,6 @@
 import { createElement } from "../../utils.js";
 
 export function renderGameScreen(state) {
-  // console.log('state game screen: ', state);
   document.body.innerHTML = "";
 
   const { mode, timer, score, grid, selectedCells } = state;
@@ -59,7 +58,7 @@ export function renderGameScreen(state) {
   const btnReset = createElement(
     "button",
     { className: "btn btn-manager-game", "data-action": "reset-game" },
-    "Reset game"
+    "Reset"
   );
   const btnContinue = createElement(
     "button",
@@ -69,12 +68,12 @@ export function renderGameScreen(state) {
       "data-state": "disabled",
       disabled: "true",
     },
-    "Continue game"
+    "Continue"
   );
   const btnSave = createElement(
     "button",
     { className: "btn btn-manager-game", "data-action": "save-game" },
-    "Save game"
+    "Save"
   );
 
   const btnManagerChildrens = [btnReset, btnContinue, btnSave];
@@ -103,7 +102,16 @@ export function renderGameScreen(state) {
     "Result"
   );
 
-  const btnNavigationChildrens = [btnSettings, btnResult];
+  const btnExit = createElement(
+    "button",
+    {
+      className: "btn btn-navigation",
+      "data-action": "open-start-screen-game",
+    },
+    "Exit"
+  )
+
+  const btnNavigationChildrens = [btnSettings, btnResult, btnExit];
 
   const btnNavigationContainer = createElement(
     "div",
@@ -195,7 +203,6 @@ export function renderGameScreen(state) {
 }
 
 function renderGrid(grid, selectedCells) {
-  console.log("selectedCells: ", selectedCells);
   const gridElement = createElement("div", { className: "game-grid" });
 
   grid.forEach((cellValue, index) => {

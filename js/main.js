@@ -34,7 +34,4 @@ const init = () => {
   listenersEvent(currentState);
 };
 
-
-
 document.addEventListener("DOMContentLoaded", init());
-

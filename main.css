@@ -207,9 +207,16 @@ select {
   cursor: pointer;
 }
 
-.btn-back-start {
+.btn-back-start,
+.btn-back-game {
     font-weight: bold;
     font-size: 1.2rem;
+}
+
+/* Экран Setting внутри игры */
+.btn-back-container {
+  display: flex;
+  gap: 1rem;
 }
 
 /* Экран результатов */
@@ -367,6 +374,11 @@ tr {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
+}
+
+.btn-manager-game,
+.btn-navigation {
+  width: 100px;
 }
 
 /* Стили для оверлея (фона) */

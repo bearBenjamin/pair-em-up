@@ -2,7 +2,6 @@ import { createElement } from "../utils.js";
 
 export function renderSettingScreen (curentState) {
     curentState.currentScreen = 'setting';
-    console.log('curentState setting screen: ', curentState);
     document.body.innerHTML = '';
 
     const title = createElement('h1', { className: 'page-title' }, 'Setting');
@@ -21,8 +20,8 @@ export function renderSettingScreen (curentState) {
     const themeLabel = createElement('label', { className: 'theme-label' }, 'Theme');
     themeLabel.setAttribute('for', 'theme');
     const themeSelect = createElement('select', { className: 'toggle-theme', id: 'theme', name: 'theme'});
-    const lightOption = createElement('option', { value: 'light', selected: state.setting.theme === 'light' }, 'Light');
-    const darkOption = createElement('option', { value: 'dark', selected: state.setting.theme === 'dark' }, 'Dark');
+    const lightOption = createElement('option', { value: 'light', selected: curentState.setting.theme === 'light' }, 'Light');
+    const darkOption = createElement('option', { value: 'dark', selected: curentState.setting.theme === 'dark' }, 'Dark');
     themeSelect.append(lightOption);
     themeSelect.append(darkOption);
 
