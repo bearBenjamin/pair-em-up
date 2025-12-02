@@ -13,7 +13,7 @@ function getModalElements() {
     };
 }
 
-export function showModal(message) {
+function showModal(message) {
     const elements = getModalElements();
     if (!elements) return;
 
@@ -38,3 +38,5 @@ function hideModal() {
     elements.closeButton.onclick = null;
     elements.overlay.onclick = null;
 }
+
+export { showModal };

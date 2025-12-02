@@ -1,37 +1,59 @@
-import { renderStarScreen } from "./screens/startScreen.js";
-import './screens/gameScreen/gameScreen.js';
-import './screens/settingScreen.js';
 import './utils.js';
-import { listenersEvent } from "./listeners.js";
-import { getState } from "./state.js";
+import './listeners.js';
+import { initializeUIRunner, state, setCurrentScreen } from "./state.js";
+import { renderStarScreen } from "./screens/startScreen.js";
+import { renderGameScreen } from "./screens/gameScreen/gameScreen.js";
+import { renderSettingScreen } from "./screens/settingScreen.js";
+import { renderResultScreen } from "./screens/resultScreen.js";
+import { renderGameSettingScreen } from "./screens/gameScreen/gameSettingScreen.js";
+import { renderGameResultScreen } from "./screens/gameScreen/gameResultScreen.js";
 
-// const state = {
-//   currentScreen: "start", // 'game', 'setting', 'result', 'gameOver';
-//   mode: null, // 'classic', 'random', 'chaotic';
-//   grid: [], // игровая сетка массив с цифрами;
-//   score: 0,
-//   timer: 0,
-//   setting: {
-//     soundEnabled: false,
-//     theme: "light", // 'dark';
-//   },
-//   assists: {
-//     hints: -1,
-//     revert: 0,
-//     addNumbers: 10,
-//     shuffle: 5,
-//     eraser: 5,
-//   },
-//   history: [], // история ходов;
-//   hasSavedGame: false,
-//   selectedCells: [], // массив индексов выделенных ячеек
-// };
+const updateUI = () => {
+  console.log('Central UI Dispatcher running for screen: ', state.currentScreen);
+
+  switch (state.currentScreen) {
+    case 'start' :
+      renderStarScreen();
+      break;
+    
+    case 'game' :
+      switch (state.mode) {
+        case 'classic' :
+        case 'random' :
+        case 'chaotic' :
+        renderGameScreen(state); // для игрового экрана нужны данные из состояния
+        break;
+      default:
+        console.error('Неизвестный игровой режим. Возврат на старт.');
+        setCurrentScreen('start');
+      }
+      break;
+
+    case 'setting' :
+      renderSettingScreen(state); // состояние нужно для изменения темы
+      break;
+
+    case 'game-setting' :
+      renderGameSettingScreen(state); // состояние нужно для изменения темы
+      break;
+
+    case 'result' :
+      renderResultScreen();
+      break;
+    
+    case 'game-result' :
+      renderGameResultScreen();
+      break;
+
+    default:
+      console.error('Неизвестный экран. Возврат на стартовый экран');
+      renderStarScreen('start');
+  }
+}
 
 const init = () => {
-  const currentState = getState();
-  console.log('currentState: ', currentState);
-  renderStarScreen();
-  listenersEvent(currentState);
+  initializeUIRunner(updateUI);
+  updateUI();
 };
 
-document.addEventListener("DOMContentLoaded", init());
+document.addEventListener("DOMContentLoaded", init);

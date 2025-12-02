@@ -7,51 +7,53 @@ import { handleBtnModeClick } from "./btns/btnMode.js";
 import { handleBtnManagerClick } from "./btns/btnManager.js";
 import { handleBtnBackClik } from "./btns/btnBack.js";
 import { handleToggleTheme } from "./theme.js";
+import { setScore } from './state.js';
 
 const body = document.body;
 
-export function listenersEvent(curentState) {
+/*export function listenersEvent(curentState) {*/
   body.addEventListener("click", (evt) => {
     const target = evt.target;
 
     if (target.closest(".btn-mode-game")) {
-      curentState.score = 0;
-      handleBtnModeClick(evt, curentState);
+      setScore(0);
+      handleBtnModeClick(evt);
     }
 
     if (target.closest(".btn-manager")) {
-      handleBtnManagerClick(evt, curentState);
+      handleBtnManagerClick(evt);
     }
 
     if (target.closest(".btn-back-start")) {
-      handleBtnBackClik(evt, curentState);
+      handleBtnBackClik();
     }
 
     if (target.closest('.btn-navigation')) {
-      handleBtnNavigationClick(target, curentState);
+      handleBtnNavigationClick(target);
     }
 
     if (target.closest('.btn-back-game')) {
-      handleBtnBackGameClick(curentState);
+      handleBtnBackGameClick();
     }
 
+    // еще не реализовывал 
     if (target.closest(".btn-manager-game")) {
       handleBtnManagerGameClick(evt, curentState);
     }
 
     if (target.closest(".btn-game")) {
-      handleBtnGameClick(evt, curentState);
+      handleBtnGameClick(evt);
     }
 
     if (target.closest(".cell")) {
-      handleGameFieldClick(evt, curentState);
+      handleGameFieldClick(evt);
     }
   });
 
   body.addEventListener("change", (evt) => {
-    handleToggleTheme(evt, curentState);
+    handleToggleTheme(evt);
   });
-}
+//}
 
 
 

@@ -1,7 +1,6 @@
 import { createElement } from "../utils.js";
 
-export function renderSettingScreen (curentState) {
-    curentState.currentScreen = 'setting';
+function renderSettingScreen (curentState) {
     document.body.innerHTML = '';
 
     const title = createElement('h1', { className: 'page-title' }, 'Setting');
@@ -33,3 +32,5 @@ export function renderSettingScreen (curentState) {
 
     document.body.append(container);
 }
+
+export { renderSettingScreen };

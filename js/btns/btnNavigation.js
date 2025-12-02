@@ -1,20 +1,18 @@
-import { renderGameSettingScreen } from "../screens/gameScreen/gameSettingScreen.js";
-import { renderGameResultScreen } from "../screens/gameScreen/gameResultScreen.js";
-import { renderStarScreen } from "../screens/startScreen.js";
+import { setCurrentScreen, setScore } from "../state.js";
 
-function handleBtnNavigationClick(target, curentState) {
+function handleBtnNavigationClick(target) {
   switch (target.getAttribute('data-action')) {
     case ('open-game-setting-screen') :
-      renderGameSettingScreen(curentState);
+      setCurrentScreen('game-setting');
     break;
 
     case ('open-game-result-screen') :
-      renderGameResultScreen(curentState);
+      setCurrentScreen('game-result');
     break;
 
     case ('open-start-screen-game') :
-      curentState.score = 0; 
-      renderStarScreen(curentState);
+      setScore(0);
+      setCurrentScreen('start');
     break;
   }
 }

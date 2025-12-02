@@ -1,26 +1,31 @@
-import { renderGameScreen } from "../screens/gameScreen/gameScreen.js";
+import { setCurrentScreen, setGameMode, setGrid } from "../state.js";
 import { getGrid } from "../utils.js";
 
-export function handleBtnModeClick(evt, currentState) {
-  currentState.currentScreen = "game";
+function handleBtnModeClick(evt) {
+  let selectedMode = null;
 
-  switch (evt.target.getAttribute("data-action")) {
-    case "open-classic-screen":
-      currentState.mode = "classic";
-      currentState.grid = getGrid(currentState.mode);
-      renderGameScreen(currentState);
+  switch (evt.target.getAttribute('data-action')) {
+    case 'open-classic-screen' :
+      selectedMode = 'classic';
       break;
-
-    case "open-random-screen":
-      currentState.mode = "random";
-      currentState.grid = getGrid(currentState.mode);
-      renderGameScreen(currentState);
+    
+    case 'open-random-screen' :
+      selectedMode = 'random';
       break;
-
-    case "open-chaotic-screen":
-      currentState.mode = "chaotic";
-      currentState.grid = getGrid(currentState.mode);
-      renderGameScreen(currentState);
+    
+    case 'open-chaotic-screen' :
+      selectedMode = 'chaotic';
       break;
   }
+
+  if (selectedMode) {
+    setGameMode(selectedMode);
+
+    const newGrid = getGrid(selectedMode);
+    
+    setGrid(newGrid);
+    setCurrentScreen('game');
+  }
 }
+
+export { handleBtnModeClick };

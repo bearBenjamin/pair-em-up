@@ -1,6 +1,6 @@
 import { createElement } from "../../utils.js";
 
-export function renderGameScreen(state) {
+function renderGameScreen(state) {
   document.body.innerHTML = "";
 
   const { mode, timer, score, grid, selectedCells } = state;
@@ -224,3 +224,5 @@ function renderGrid(grid, selectedCells) {
   });
   return gridElement;
 }
+
+export { renderGameScreen };

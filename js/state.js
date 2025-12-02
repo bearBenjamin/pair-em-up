@@ -24,20 +24,36 @@ const state = {
   selectedCells: [], // массив индексов выделенных ячеек
 };
 
-let subscribers = [];
+let UIRunnerCallback = () => {};
 
-function subscribe(callback) {
-    subscribers.push(callback);
+function initializeUIRunner(callback) {
+  UIRunnerCallback = callback;
 }
 
-function updateState(updates) {
-    Object.assign(state, updates);
-    
-    subscribers.forEach(callback => callback(state));
+function triggerUIUpdate () {
+  UIRunnerCallback();
 }
 
-function getState() {
-    return { ...state }; 
+function setCurrentScreen(screenName) {
+  state.currentScreen = screenName;
+  UIRunnerCallback();
 }
 
-export { state, updateState, subscribe, getState };
+function setGameMode(modeName) {
+  state.mode = modeName;
+}
+
+function setGrid(newGrid) {
+  state.grid = newGrid;
+}
+
+function setScore(newScore) {
+  state.score = newScore;
+}
+
+function setTheme(newTheme) {
+  state.setting.theme = newTheme;
+  UIRunnerCallback();
+}
+
+export { state, initializeUIRunner, triggerUIUpdate, setCurrentScreen, setGameMode, setGrid, setScore, setTheme }

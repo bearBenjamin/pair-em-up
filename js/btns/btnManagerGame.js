@@ -1,5 +1,4 @@
-
-export function handleBtnManagerGameClick(evt, currentState) {
+function handleBtnManagerGameClick(evt) {
   switch (evt.target.getAttribute("data-action")) {
     case "reset-game":
       console.log("reset");
@@ -14,3 +13,5 @@ export function handleBtnManagerGameClick(evt, currentState) {
       break;
   }
 }
+
+export { handleBtnManagerGameClick };

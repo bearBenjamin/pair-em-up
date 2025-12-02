@@ -1,4 +1,4 @@
-export function createElement(tag, attributes = {}, ...childrens) {
+function createElement(tag, attributes = {}, ...childrens) {
   const element = document.createElement(tag);
 
   Object.entries(attributes).forEach(([key, value]) => {
@@ -24,8 +24,7 @@ export function createElement(tag, attributes = {}, ...childrens) {
   return element;
 }
 
-export function getGrid(mode) {
-  console.log('mode: ', mode);
+function getGrid(mode) {
   let grid;
   switch (mode) {
     case 'classic':
@@ -79,7 +78,7 @@ function shuffleElement(array) {
   return arr;
 }
 
-export function addMoveToHistory(state, index1, index2, value1, value2, points) {
+function addMoveToHistory(state, index1, index2, value1, value2, points) {
   const move = {
     moveIndex: state.history.length + 1,
     cell1Index: index1,
@@ -91,3 +90,5 @@ export function addMoveToHistory(state, index1, index2, value1, value2, points) 
   };
   state.history.push(move);
 }
+
+export { addMoveToHistory, getGrid, createElement }

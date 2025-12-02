@@ -1,83 +1,84 @@
-import { renderGameScreen } from "../screens/gameScreen/gameScreen.js";
 import { resetSelection, areaCellsAdjacent, validatePair } from "../gameLogic.js";
 import { showModal } from "../screens/modalScreen.js";
+import { state, triggerUIUpdate } from '../state.js';
 
 // блок Hints
 const NUM_HINTS = 5;
 // блок Hints
 
-export function handleBtnGameClick(evt, currentState) {
+function handleBtnGameClick(evt) {
   switch (evt.target.getAttribute("data-action")) {
     case "hints":
-      handleHintBtnClick(currentState);
+      handleHintBtnClick();
       break;
 
     case "backspace":
-      handleBackspaceClick(currentState);
+      handleBackspaceClick();
       break;
 
     case "add":
-      handleAddClick(currentState);
+      handleAddClick();
       break;
 
     case "shuffle":
-      handleShuffleClick(currentState);
+      handleShuffleClick();
       break;
 
     case "eraser":
-      handleEraserClick(currentState);
+      handleEraserClick();
       break;
   }
 }
 
 // начало блока Backspace;
-function handleBackspaceClick(currentState) {
-  if (currentState.history.length === 0) {
+function handleBackspaceClick() {
+  if (state.history.length === 0) {
     console.log("История пуста, откат невозможен");
     return;
   }
 
-  if (currentState.hasRevertedLastMove) {
+  if (state.hasRevertedLastMove) {
     console.log("Откат уже был использован. Сделайте новый ход.");
     return;
   }
 
-  const lastMove = currentState.history.pop();
+  const lastMove = state.history.pop();
 
   const { cell1Index, cell2Index, cell1Value, cell2Value, pointsScored } =
     lastMove;
 
-  currentState.grid[cell1Index] = cell1Value;
-  currentState.grid[cell2Index] = cell2Value;
-  currentState.score = currentState.score - pointsScored;
+  state.grid[cell1Index] = cell1Value;
+  state.grid[cell2Index] = cell2Value;
+  state.score = state.score - pointsScored;
 
-  currentState.hasRevertedLastMove = true;
-  resetSelection(currentState);
-  renderGameScreen(currentState);
+  state.hasRevertedLastMove = true;
+  resetSelection(state);
+  //renderGameScreen(state);
+  triggerUIUpdate();
 }
 // конец блока Backspace;
 
 // начало блока Hints;
-function handleHintBtnClick(currentState) {
-  const { grid } = currentState;
+function handleHintBtnClick() {
+  const { grid } = state;
 
-  if (currentState.assists.hints === 0) {
+  if (state.assists.hints === 0) {
     showModal("The hints have run out.");
     return;
   }
 
-  currentState.hintsActive = !currentState.hintsActive;
+  state.hintsActive = !state.hintsActive;
 
-  if (currentState.hintsActive) {
+  if (state.hintsActive) {
     const hints = getAllHints(grid);
 
     if (hints.length === 0) {
       showModal("There are no available moves on the field!");
-      currentState.hintsActive = false;
+      state.hintsActive = false;
       return;
     }
 
-    currentState.assists.hints -= 1;
+    state.assists.hints -= 1;
 
     renderHints(hints, true);
   }
@@ -155,37 +156,39 @@ function shuffleHints(hints) {
 // конец блока Hints;
 
 // начало блока Add;
-function handleAddClick(currentState) {
-  console.log('currentState: ', currentState);
-  const notEmptyGrid = currentState.grid.filter(Boolean);
-  const { grid } = currentState;
-  console.log('grid: ', grid);
+function handleAddClick() {
+  const notEmptyGrid = state.grid.filter(Boolean);
+  const { grid } = state;
   const newGrid = [...grid, ...notEmptyGrid];
-  console.log('newGrid: ', newGrid);
-  currentState.grid = newGrid;
-  renderGameScreen(currentState);
+  state.grid = newGrid;
+  //renderGameScreen(currentState);
+  triggerUIUpdate();
 }
 // конец блока Add;
 
 
 // начало блока Shuffle
-function handleShuffleClick(currentState) {
-  const newGrid = currentState.grid;
-  console.log('newGrid: ', newGrid);
+function handleShuffleClick() {
+  const newGrid = state.grid;
   for (let i = newGrid.length - 1; i > 0; i -= 1) {
      const j = Math.floor(Math.random() * (i + 1));
     [newGrid[i], newGrid[j]] = [newGrid[j], newGrid[i]];
   }
-  console.log('newGrid: ', newGrid);
-  currentState.grid = newGrid;
-  renderGameScreen(currentState);
+
+  state.grid = newGrid;
+  //renderGameScreen(currentState);
+  triggerUIUpdate();
 }
 // конец блока Shuffle;
 
 // начало блока Eraser
-export function handleEraserClick(currentState) {
+function handleEraserClick() {
   const cellSellected = document.querySelector('.cell.selected');
-  const index = cellSellected.getAttribute('data-index');
-  currentState.grid[index] = '';
-  renderGameScreen(currentState);
+  if (cellSellected) {
+    const index = cellSellected.getAttribute('data-index');
+    state.grid[index] = '';
+    triggerUIUpdate();
+  }
 }
+
+export { handleEraserClick, handleBtnGameClick };

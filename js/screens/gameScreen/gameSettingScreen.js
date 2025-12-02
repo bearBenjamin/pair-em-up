@@ -1,7 +1,7 @@
 import { createElement } from "../../utils.js";
 
 function renderGameSettingScreen(curentState) {
-  curentState.currentScreen = 'game-setting';
+  console.log('curentState: ', curentState);
 
   document.body.innerHTML = '';
   
@@ -36,6 +36,7 @@ function renderGameSettingScreen(curentState) {
   const container = createElement('div', { className: 'wrapper setting-screen' }, title, soundContainer, themeSetting, containerBtn);
   
   document.body.append(container);
+  console.log('currentState: ', curentState);
 }
 
 export { renderGameSettingScreen };

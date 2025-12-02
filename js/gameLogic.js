@@ -1,71 +1,65 @@
-import { renderGameScreen } from "./screens/gameScreen/gameScreen.js";
 import { addMoveToHistory } from "./utils.js";
-import { handleEraserClick, renderHints } from "./btns/btnGame.js";
+import { renderHints } from "./btns/btnGame.js";
+import { state, triggerUIUpdate } from './state.js';
 
 const GRID_COLUMNS = 9;
 
-export function handleGameFieldClick(evt, curentState) {
+function handleGameFieldClick(evt) {
   const cell = evt.target.closest("[data-index]");
   
   if (!cell) return;
 
   const index = parseInt(cell.getAttribute("data-index"), 10); // индекс ячейки
 
-  const { grid } = curentState;
+  const { grid } = state;
 
   if (!grid[index]) return; // Если ячейка пуста ничего не делаю
 
-  const { firstClick, secondClick } = curentState;
+  const { firstClick, secondClick } = state;
 
   if (firstClick === null) {
-    curentState.firstClick = index;
-    curentState.selectedCells.push(index);
+    state.firstClick = index;
+    state.selectedCells.push(index);
     cell.classList.add("selected");
   } else if (secondClick === null) {
     if (index === firstClick) {
       // Отмена первого выделения
       cell.classList.remove("selected");
-      curentState.firstClick = null;
-      curentState.selectedCells.length = 0;
+      state.firstClick = null;
+      state.selectedCells.length = 0;
     } else {
       // Второе выделение
-      curentState.secondClick = index;
-      curentState.selectedCells.push(index);
+      state.secondClick = index;
+      state.selectedCells.push(index);
       cell.classList.add("selected");
     }
   } else {
     // Третье выделение - сбрасываю предыдущее и начинаю новое
-    resetSelection(curentState);
-    curentState.firstClick = index;
-    curentState.selectedCells.push(index);
+    resetSelection(state);
+    state.firstClick = index;
+    state.selectedCells.push(index);
     cell.classList.add("selected");
   }
 
   // Если выбрано две ячейки, запускаю их обработку
-  if (curentState.selectedCells.length === 2) {
-    processSelection(curentState);
+  if (state.selectedCells.length === 2) {
+    processSelection();
   }
 }
 
-function processSelection(curentState) {
-  const { selectedCells, grid } = curentState;
+function processSelection() {
+  const { selectedCells, grid } = state;
   const [index1, index2] = selectedCells;
 
   const value1 = grid[index1];
   const value2 = grid[index2];
-  const scoreBeforeMove = curentState.score;
-
-  console.log('index1: ', index1);
-  console.log('index2: ', index2);
-  console.log('value1: ', value1);
-  console.log('value2: ', value2);
+  const scoreBeforeMove = state.score;
 
   // Проверка возможности соединить ячейки
-  console.log('areaCellsAdjancent: ', areaCellsAdjacent(index1, index2, grid));
   if (!areaCellsAdjacent(index1, index2, grid)) {
     console.log("Ячейки не являются смежными");
-    resetSelection(curentState);
-    return renderGameScreen(curentState);
+    resetSelection();
+    return triggerUIUpdate();
   }
 
   // Проверка валидности пары
@@ -73,36 +67,37 @@ function processSelection(curentState) {
 
   if (!isValid) {
     console.log("Пара не валидна");
-    resetSelection(curentState);
-    return renderGameScreen(curentState);
+    resetSelection();
+    return triggerUIUpdate();
   }
 
   //  Пара валидна: удаляю ячейки, начисляю очки
   console.log(`Пара валидна! Начислено ${points} очков.`);
   grid[index1] = "";
   grid[index2] = "";
-  curentState.score = scoreBeforeMove + points;
+  state.score = scoreBeforeMove + points;
 
-  curentState.hasRevertedLastMove = false;
+  state.hasRevertedLastMove = false;
 
-  if (curentState.hintsActive) {
-    curentState.hintsActive = false;
+  if (state.hintsActive) {
+    state.hintsActive = false;
     renderHints([], false);
   }
 
-  addMoveToHistory(curentState, index1, index2, value1, value2, points); // записываю ход в историю
-  resetSelection(curentState); // Сбрасываю после успешной обработки
+  addMoveToHistory(state, index1, index2, value1, value2, points); // записываю ход в историю
+  resetSelection(); // Сбрасываю после успешной обработки
 
-  return renderGameScreen(curentState);
+  return triggerUIUpdate();
 }
 
-export function resetSelection(curentState) {
+function resetSelection() {
   document
     .querySelectorAll(".cell.selected")
     .forEach((cell) => cell.classList.remove("selected"));
-  curentState.firstClick = null;
-  curentState.secondClick = null;
-  curentState.selectedCells.length = 0;
+  state.firstClick = null;
+  state.secondClick = null;
+  state.selectedCells.length = 0;
+  triggerUIUpdate();
 }
 
 function getSortIndex(index1, index2) {
@@ -112,7 +107,7 @@ function getSortIndex(index1, index2) {
   return [indexOne, indexTwo];
 }
 
-export function areaCellsAdjacent(index1, index2, grid) {
+function areaCellsAdjacent(index1, index2, grid) {
   const [indexOne, indexTwo] = getSortIndex(index1, index2);
 
   const { row: row1, col: col1 } = getRowCol(indexOne);
@@ -170,7 +165,7 @@ export function areaCellsAdjacent(index1, index2, grid) {
 }
 
 // функция валидации пар и подсчета очков
-export function validatePair(num1, num2) {
+function validatePair(num1, num2) {
   if (num1 === null || num2 === null) return { isValid: false, points: 0 };
 
   const isIdentical = num1 === num2;
@@ -206,7 +201,7 @@ function findLastNonEmptyCellInRow(row, grid) {
   }
   return null; // Ряд пуст
 }
-console.log('* * * * *');
+
 function findFirstNonEmptyCellInRow(row, grid) {
   for (let col = 0; col < GRID_COLUMNS; col += 1) {
     const index = row * GRID_COLUMNS + col;
@@ -216,3 +211,5 @@ function findFirstNonEmptyCellInRow(row, grid) {
   }
   return null;
 }
+
+export { validatePair, areaCellsAdjacent, resetSelection, handleGameFieldClick }

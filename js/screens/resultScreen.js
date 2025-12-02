@@ -1,7 +1,6 @@
 import { createElement } from "../utils.js";
 
-function renderResultScreen(curentState) {
-    curentState.currentScreen = 'result';
+function renderResultScreen() {
     document.body.innerHTML = '';
 
     const title = createElement('h1', { className: 'page-title' }, 'Result');

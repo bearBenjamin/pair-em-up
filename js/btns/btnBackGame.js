@@ -1,7 +1,7 @@
-import { renderGameScreen } from "../screens/gameScreen/gameScreen.js";
+import { setCurrentScreen } from "../state.js";
 
-function handleBtnBackGameClick(curentState) {
-  renderGameScreen(curentState);
+function handleBtnBackGameClick() {
+  setCurrentScreen('game');
 }
 
 export { handleBtnBackGameClick };
