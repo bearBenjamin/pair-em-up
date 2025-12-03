@@ -38,7 +38,7 @@ const body = document.body;
 
     // еще не реализовывал 
     if (target.closest(".btn-manager-game")) {
-      handleBtnManagerGameClick(evt, curentState);
+      handleBtnManagerGameClick(evt);
     }
 
     if (target.closest(".btn-game")) {

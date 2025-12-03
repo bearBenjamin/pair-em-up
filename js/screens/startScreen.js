@@ -1,4 +1,5 @@
 import { createElement } from "../utils.js";
+import { state } from "../state.js";
 
 function renderStarScreen() {
   document.body.innerHTML = "";
@@ -17,23 +18,17 @@ function renderStarScreen() {
 
   const btnClassicMode = createElement(
     "button",
-    { className: "btn btn-mode-game",
-      'data-action': 'open-classic-screen',
-    },
+    { className: "btn btn-mode-game", "data-action": "open-classic-screen" },
     "Classic"
   );
   const btnRandomMode = createElement(
     "button",
-    { className: "btn btn-mode-game",
-      'data-action': 'open-random-screen',
-    },
+    { className: "btn btn-mode-game", "data-action": "open-random-screen" },
     "Random"
   );
   const btnChaoticMode = createElement(
     "button",
-    { className: "btn btn-mode-game",
-      'data-action': 'open-chaotic-screen',
-    },
+    { className: "btn btn-mode-game", "data-action": "open-chaotic-screen" },
     "Chaotic"
   );
 
@@ -47,25 +42,33 @@ function renderStarScreen() {
 
   const btnSettings = createElement(
     "button",
-    { className: "btn btn-manager",
-      'data-action': 'open-setting-screen',
-    },
+    { className: "btn btn-manager", "data-action": "open-setting-screen" },
     "Settings"
   );
-  const btnContunie = createElement(
-    "button",
-    { className: "btn btn-manager",
-      'data-action': 'open-continue-game',
-      'data-state': 'disabled',
-      disabled: 'true',
-    },
-    "Continue"
-  );
+
+  let btnContunie;
+
+  if (state.hasSavedGame) {
+    btnContunie = createElement(
+      "button",
+      { className: "btn btn-manager", "data-action": "open-continue-game" },
+      "Continue"
+    );
+  } else {
+    btnContunie = createElement(
+      "button",
+      {
+        className: "btn btn-manager",
+        "data-action": "open-continue-game",
+        "data-state": "disabled",
+      },
+      "Continue"
+    );
+  }
+
   const btnResult = createElement(
     "button",
-    { className: "btn btn-manager",
-      'data-action': 'open-result-screen',
-    },
+    { className: "btn btn-manager", "data-action": "open-result-screen" },
     "Result"
   );
 
@@ -88,4 +91,4 @@ function renderStarScreen() {
   document.body.append(pageContainer);
 }
 
-export { renderStarScreen }
+export { renderStarScreen };
