@@ -60,23 +60,34 @@ function renderGameScreen(state) {
     { className: "btn btn-manager-game", "data-action": "reset-game" },
     "Reset"
   );
-  const btnContinue = createElement(
-    "button",
-    {
-      className: "btn btn-manager-game",
-      "data-action": "continue-game",
-      "data-state": "disabled",
-      disabled: "true",
-    },
-    "Continue"
-  );
+  
+  let btnClear;
+
+  if (state.hasSavedGame) {
+    btnClear = createElement(
+      "button",
+      { className: "btn btn-manager-game", "data-action": "clear-game" },
+      "Clear"
+    );
+  } else {
+    btnClear = createElement(
+      "button",
+      {
+        className: "btn btn-manager-game",
+        "data-action": "clear-game",
+        "data-state": "disabled",
+      },
+      "Clear"
+    );
+  }
+  
   const btnSave = createElement(
     "button",
     { className: "btn btn-manager-game", "data-action": "save-game" },
     "Save"
   );
 
-  const btnManagerChildrens = [btnReset, btnContinue, btnSave];
+  const btnManagerChildrens = [btnSave, btnReset, btnClear];
 
   const btnManagerContainer = createElement(
     "div",

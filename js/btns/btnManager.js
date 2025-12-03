@@ -1,4 +1,5 @@
 import { setCurrentScreen } from "../state.js";
+import { loadGameState } from "../storage.js";
 
 function handleBtnManagerClick(evt) {
   switch (evt.target.getAttribute("data-action")) {
@@ -8,6 +9,12 @@ function handleBtnManagerClick(evt) {
 
     case "open-result-screen":
       setCurrentScreen('result');
+      break;
+
+    case "open-continue-game":
+      if(loadGameState()) {
+        setCurrentScreen('game');
+      };
       break;
   }
 }

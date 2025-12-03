@@ -1,6 +1,7 @@
 import './utils.js';
 import './listeners.js';
 import { initializeUIRunner, state, setCurrentScreen } from "./state.js";
+import { loadGameState } from './storage.js';
 import { renderStarScreen } from "./screens/startScreen.js";
 import { renderGameScreen } from "./screens/gameScreen/gameScreen.js";
 import { renderSettingScreen } from "./screens/settingScreen.js";
@@ -52,6 +53,7 @@ const updateUI = () => {
 }
 
 const init = () => {
+  loadGameState();
   initializeUIRunner(updateUI);
   updateUI();
 };

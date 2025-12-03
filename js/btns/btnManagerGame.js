@@ -1,15 +1,23 @@
+import { state, setCurrentScreen, setGrid, triggerUIUpdate } from "../state.js";
+import { clearSavedGame, saveGameState } from "../storage.js";
+import { getGrid } from "../utils.js";
+
 function handleBtnManagerGameClick(evt) {
   switch (evt.target.getAttribute("data-action")) {
     case "reset-game":
-      console.log("reset");
+      const newGrid = getGrid(state.mode);
+      setGrid(newGrid);
+      setCurrentScreen('game');
       break;
 
-    case "continue-game":
-      console.log("continue");
+    case "clear-game":
+      clearSavedGame();
+      triggerUIUpdate();
       break;
 
     case "save-game":
-      console.log("save");
+      saveGameState();
+      triggerUIUpdate();
       break;
   }
 }
