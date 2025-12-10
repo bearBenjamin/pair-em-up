@@ -2,7 +2,7 @@ const state = {
   currentScreen: "start", // 'game', 'setting', 'result', 'gameOver';
   mode: null, // 'classic', 'random', 'chaotic';
   grid: [], // игровая сетка массив с цифрами;
-  score: 0,
+  score: 0, // текущий результат игры;
   timer: 0,
   setting: {
     soundEnabled: false,
@@ -56,4 +56,8 @@ function setTheme(newTheme) {
   UIRunnerCallback();
 }
 
-export { state, initializeUIRunner, triggerUIUpdate, setCurrentScreen, setGameMode, setGrid, setScore, setTheme }
+function setTimer(newTime) {
+  state.timer = newTime;
+}
+
+export { state, initializeUIRunner, triggerUIUpdate, setCurrentScreen, setGameMode, setGrid, setScore, setTheme, setTimer }

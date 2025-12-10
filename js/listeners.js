@@ -7,7 +7,7 @@ import { handleBtnModeClick } from "./btns/btnMode.js";
 import { handleBtnManagerClick } from "./btns/btnManager.js";
 import { handleBtnBackClik } from "./btns/btnBack.js";
 import { handleToggleTheme } from "./theme.js";
-import { setScore } from './state.js';
+import { setScore, state } from './state.js';
 
 const body = document.body;
 

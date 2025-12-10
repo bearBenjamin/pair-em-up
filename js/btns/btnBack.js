@@ -1,6 +1,7 @@
-import { setCurrentScreen } from "../state.js";
+import { setCurrentScreen, setTimer } from "../state.js";
 
 function handleBtnBackClik() {
+  setTimer(0);
   setCurrentScreen('start');
 }
 
