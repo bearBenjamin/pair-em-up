@@ -1,6 +1,7 @@
 import './utils.js';
 import './listeners.js';
 import { initializeUIRunner, state, setCurrentScreen } from "./state.js";
+import { startTimer, stopTimer, resetTimer } from './timer.js';
 import { loadGameState } from './storage.js';
 import { renderStarScreen } from "./screens/startScreen.js";
 import { renderGameScreen } from "./screens/gameScreen/gameScreen.js";
@@ -14,6 +15,7 @@ const updateUI = () => {
 
   switch (state.currentScreen) {
     case 'start' :
+      stopTimer();
       renderStarScreen();
       break;
     
@@ -22,8 +24,10 @@ const updateUI = () => {
         case 'classic' :
         case 'random' :
         case 'chaotic' :
-        renderGameScreen(state); // для игрового экрана нужны данные из состояния
+          startTimer();
+          renderGameScreen(state); // для игрового экрана нужны данные из состояния
         break;
+
       default:
         console.error('Неизвестный игровой режим. Возврат на старт.');
         setCurrentScreen('start');
@@ -31,19 +35,27 @@ const updateUI = () => {
       break;
 
     case 'setting' :
+      stopTimer();
       renderSettingScreen(state); // состояние нужно для изменения темы
       break;
 
     case 'game-setting' :
+      stopTimer();
       renderGameSettingScreen(state); // состояние нужно для изменения темы
       break;
 
     case 'result' :
+      stopTimer();
       renderResultScreen();
       break;
     
     case 'game-result' :
+      stopTimer();
       renderGameResultScreen();
+      break;
+    
+    case 'gameOver':
+      stopTimer();
       break;
 
     default:

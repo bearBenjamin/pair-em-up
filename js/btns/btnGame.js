@@ -187,6 +187,8 @@ function handleEraserClick() {
   if (cellSellected) {
     const index = cellSellected.getAttribute('data-index');
     state.grid[index] = '';
+    state.firstClick = null;
+    state.selectedCells = [];
     triggerUIUpdate();
   }
 }

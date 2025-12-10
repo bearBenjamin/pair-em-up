@@ -1,3 +1,4 @@
+import { formatTime } from "../../timer.js";
 import { createElement } from "../../utils.js";
 
 function renderGameScreen(state) {
@@ -32,9 +33,9 @@ function renderGameScreen(state) {
   const timeDisplay = createElement(
     "p",
     { className: "time-display" },
-    "Time: "
+    'Time: '
   );
-  const timeCount = createElement("p", { className: "time-count" }, `${timer}`); // надо будет посмотреть как делать таймер
+  const timeCount = createElement("p", { className: "time-count" }, `${formatTime(state.timer)}`); // надо будет посмотреть как делать таймер
   const timeContainer = createElement(
     "div",
     { className: "time-container" },

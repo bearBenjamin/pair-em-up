@@ -1,4 +1,4 @@
-import { setCurrentScreen, setScore } from "../state.js";
+import { setCurrentScreen, setScore, setTimer } from "../state.js";
 
 function handleBtnNavigationClick(target) {
   switch (target.getAttribute('data-action')) {
@@ -12,6 +12,7 @@ function handleBtnNavigationClick(target) {
 
     case ('open-start-screen-game') :
       setScore(0);
+      setTimer(0);
       setCurrentScreen('start');
     break;
   }
