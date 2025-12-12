@@ -1,4 +1,4 @@
-import { state, setCurrentScreen, setGrid, setScore, setTimer, triggerUIUpdate } from "../state.js";
+import { state, setCurrentScreen, setGrid, setScore, setTimer, setModal, triggerUIUpdate } from "../state.js";
 import { clearSavedGame, saveGameState } from "../storage.js";
 import { getGrid } from "../utils.js";
 
@@ -9,6 +9,7 @@ function handleBtnManagerGameClick(evt) {
       setGrid(newGrid);
       setScore(0);
       setTimer(0);
+      setModal(false)
       setCurrentScreen('game');
       break;
 

@@ -1,6 +1,6 @@
 import './utils.js';
 import './listeners.js';
-import { initializeUIRunner, state, setCurrentScreen } from "./state.js";
+import { initializeUIRunner, state, setCurrentScreen, updateHightScore } from "./state.js";
 import { startTimer, stopTimer, resetTimer } from './timer.js';
 import { loadGameState } from './storage.js';
 import { renderStarScreen } from "./screens/startScreen.js";
@@ -9,9 +9,16 @@ import { renderSettingScreen } from "./screens/settingScreen.js";
 import { renderResultScreen } from "./screens/resultScreen.js";
 import { renderGameSettingScreen } from "./screens/gameScreen/gameSettingScreen.js";
 import { renderGameResultScreen } from "./screens/gameScreen/gameResultScreen.js";
+import { renderLoseModal, renderWinModal } from './screens/modalScreen.js';
 
 const updateUI = () => {
   console.log('Central UI Dispatcher running for screen: ', state.currentScreen);
+  const exitModal = document.querySelector('.modal-overlay');
+  if(exitModal) exitModal.remove();
+
+  if (state.gameStatus === 'won' && state.mode) {
+    updateHightScore(state.mode, state.score);
+  }
 
   switch (state.currentScreen) {
     case 'start' :
@@ -26,6 +33,17 @@ const updateUI = () => {
         case 'chaotic' :
           startTimer();
           renderGameScreen(state); // для игрового экрана нужны данные из состояния
+
+          if (state.ui.isModalOpen) {
+            switch (state.ui.modalType) {
+              case 'win' :
+                renderWinModal();
+                break;
+              case 'lose' :
+                renderLoseModal();
+                break;
+            }
+          }
         break;
 
       default:

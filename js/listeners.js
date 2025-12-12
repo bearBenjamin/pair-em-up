@@ -7,11 +7,10 @@ import { handleBtnModeClick } from "./btns/btnMode.js";
 import { handleBtnManagerClick } from "./btns/btnManager.js";
 import { handleBtnBackClik } from "./btns/btnBack.js";
 import { handleToggleTheme } from "./theme.js";
-import { setScore, state } from './state.js';
+import { setScore, setModal } from './state.js';
 
 const body = document.body;
 
-/*export function listenersEvent(curentState) {*/
   body.addEventListener("click", (evt) => {
     const target = evt.target;
 
@@ -35,8 +34,7 @@ const body = document.body;
     if (target.closest('.btn-back-game')) {
       handleBtnBackGameClick();
     }
-
-    // еще не реализовывал 
+ 
     if (target.closest(".btn-manager-game")) {
       handleBtnManagerGameClick(evt);
     }
@@ -48,12 +46,16 @@ const body = document.body;
     if (target.closest(".cell")) {
       handleGameFieldClick(evt);
     }
+
+    if (target.closest(".modal-hint-close-button")) {
+      setModal(false); 
+      return;
+  }
   });
 
   body.addEventListener("change", (evt) => {
     handleToggleTheme(evt);
   });
-//}
 
 
 

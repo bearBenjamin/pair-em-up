@@ -182,33 +182,22 @@ function renderGameScreen(state) {
     btnContainer
   );
 
-  // Модальное окно
-  const btnCloseModal = createElement(
-    "button",
-    { className: "btn modal-close-button" },
-    "Close"
-  );
-  const modalMessage = createElement("p", { className: "modal-message" });
-  const modal = createElement(
-    "div",
-    { className: "modal" },
-    modalMessage,
-    btnCloseModal
-  );
+  // Модальные окна
 
-  const modalContainer = createElement(
-    "div",
-    { className: "modal-overlay visually-hidden" },
-    modal
-  );
+  
 
+  
+ 
+  // собираю и отрисовываю экран полностью
   const container = createElement(
     "div",
     { className: "wrapper game-screen" },
     header,
     main,
     footer,
-    modalContainer
+    //modalHintContainer,
+    //modalLoseContainer,
+    //modalWinContainer,
   );
 
   document.body.append(container);
