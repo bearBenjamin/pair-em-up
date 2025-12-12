@@ -1,6 +1,7 @@
 import { addMoveToHistory } from "./utils.js";
-import { renderHints } from "./btns/btnGame.js";
-import { state, triggerUIUpdate } from './state.js';
+import { renderHints, getAllHints } from "./btns/btnGame.js";
+import { state, triggerUIUpdate, setGameStatus, setModal } from './state.js';
+//import { showModal } from "./screens/modalScreen.js";
 
 const GRID_COLUMNS = 9;
 
@@ -87,6 +88,9 @@ function processSelection() {
   addMoveToHistory(state, index1, index2, value1, value2, points); // записываю ход в историю
   resetSelection(); // Сбрасываю после успешной обработки
 
+  checkForGameEnd();
+  console.log('state: ', state);
+
   return triggerUIUpdate();
 }
 
@@ -105,6 +109,39 @@ function getSortIndex(index1, index2) {
   const indexOne = idxA;
   const indexTwo = idxB;
   return [indexOne, indexTwo];
+}
+
+function checkForGameEnd() {
+  const remainingCells = state.grid.filter(Boolean).length;
+  const availableHints = getAllHints(state.grid).length;
+  console.log('remainingCells: ', remainingCells);
+  console.log('availableHints: ', availableHints);
+
+  if (remainingCells === 0) {
+    setGameStatus('won');
+    setModal(true, 'win');
+    return;
+  } 
+
+  const canUseAdd = state.assists.addNumbers > 0;
+  console.log('canUseAdd: ', canUseAdd);
+  const canUseShuffle = state.assists.shuffle > 0;
+  console.log('canUseShuffle: ', canUseShuffle);
+  const canUseEraser = state.assists.eraser > 0 && state.selectedCells.length > 0;
+  console.log('canUseEraser: ', canUseEraser);
+
+  if (canUseAdd || canUseShuffle || canUseEraser) {
+      console.log("Нет естественных ходов, но доступны assists. Игра продолжается.");
+      return;
+  }
+
+  console.log('availabelHints: ', availableHints);
+  console.log('state.assists.hints: ', state.assists.hints);
+  console.log('remainingCells: ', remainingCells);
+  if (availableHints === 0 && state.assists.hints === 0 && remainingCells > 0) {
+    setGameStatus('lost');
+    setModal(true, 'lose');
+  }
 }
 
 function areaCellsAdjacent(index1, index2, grid) {

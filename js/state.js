@@ -1,8 +1,14 @@
 const state = {
   currentScreen: "start", // 'game', 'setting', 'result', 'gameOver';
   mode: null, // 'classic', 'random', 'chaotic';
+  gameStatus: 'playing', // 'playing', 'won', lost'
   grid: [], // игровая сетка массив с цифрами;
   score: 0, // текущий результат игры;
+  highScore: {
+    classic: 0,
+    random: 0,
+    chaotic: 0,
+  },
   timer: 0,
   setting: {
     soundEnabled: false,
@@ -21,7 +27,11 @@ const state = {
   hasRevertedLastMove: false,
   firstClick: null,
   secondClick: null,
-  selectedCells: [], // массив индексов выделенных ячеек
+  selectedCells: [], // массив индексов выделенных ячеек 
+  ui: {
+    isModalOpen: false,
+    modalType: null, // 'win', 'lose'
+  },
 };
 
 let UIRunnerCallback = () => {};
@@ -30,7 +40,7 @@ function initializeUIRunner(callback) {
   UIRunnerCallback = callback;
 }
 
-function triggerUIUpdate () {
+function triggerUIUpdate() {
   UIRunnerCallback();
 }
 
@@ -60,4 +70,33 @@ function setTimer(newTime) {
   state.timer = newTime;
 }
 
-export { state, initializeUIRunner, triggerUIUpdate, setCurrentScreen, setGameMode, setGrid, setScore, setTheme, setTimer }
+function updateHightScore(mode, newScore) {
+  if(state.highScore[mode] < newScore) {
+    state.highScore[mode] = newScore;
+  }
+}
+
+function setModal(isOpen, type = null) {
+  state.ui.isModalOpen = isOpen;
+  state.ui.modalType = type;
+  triggerUIUpdate(); // Обновляю UI, чтобы показать/скрыть окно
+}
+
+function setGameStatus(status) {
+  state.gameStatus = status;
+}
+
+export {
+  state,
+  initializeUIRunner,
+  triggerUIUpdate,
+  setCurrentScreen,
+  setGameMode,
+  setGrid,
+  setScore,
+  setTheme,
+  setTimer,
+  updateHightScore,
+  setModal,
+  setGameStatus,
+};

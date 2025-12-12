@@ -399,7 +399,9 @@ tr {
 }
 
 /* Стили для самого окна */
-.modal {
+.modal-hint,
+.modal-lose,
+.modal-win {
   background-color: #fff;
   padding: 20px 30px;
   border-radius: 8px;
@@ -410,19 +412,44 @@ tr {
   transition: transform 0.3s ease-in-out;
 }
 
-.modal-message {
+.modal-hint-message {
   margin: 0 0 20px;
   font-size: 1.5rem;
   color: #333;
 }
 
-.modal-close-button {
+.modal-hint-close-button {
   padding: 8px 16px;
   border: none;
   color: var(--button-text-color);
   border-radius: 4px;
   cursor: pointer;
   font-size: 1.2rem;
+}
+
+.modal-lose,
+.modal-win {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.modal-lose-title,
+.modal-win-title {
+  margin: 0;
+}
+
+.modal-lose-action,
+.modal-win-action {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.btn-lost-new-game,
+.btn-win-new-game {
+  width: 100%;
 }
 
 /*.modal-close-button:hover {
@@ -435,6 +462,6 @@ tr {
   visibility: visible;
 }
 
-.modal-overlay:not(.hidden) .modal {
+.modal-overlay:not(.hidden) .modal-hint {
   transform: scale(1);
 }

@@ -1,42 +1,65 @@
-function getModalElements() {
-    const modalOverlay = document.querySelector('.modal-overlay');
+import { state } from '../state.js';
+import { createElement } from '../utils.js';
 
-    if (!modalOverlay) {
-        console.error('Модальное окно не найдено! Убедитесь, что renderGameScreen отрисовал его.');
-        return null;
-    }
-
-    return {
-        overlay: modalOverlay,
-        message: modalOverlay.querySelector('.modal-message'),
-        closeButton: modalOverlay.querySelector('.modal-close-button'),
-    };
+// Вспомогательная функция для рендеринга
+function renderModal(modalElement) {
+    document.body.appendChild(modalElement); 
 }
 
-function showModal(message) {
-    const elements = getModalElements();
-    if (!elements) return;
+export function renderMessageModal(message) {
+  const btnCloseModalHint = createElement("button", { className: "btn modal-hint-close-button" }, "Close");
+  const modalHintMessage = createElement("p", { className: "modal-hint-message" }, message);
+  const modalHint = createElement("div", { className: "modal-hint" }, modalHintMessage, btnCloseModalHint);
 
-    elements.message.textContent = message;
+  const modalHintContainer = createElement("div", { className: "modal-overlay hint" }, modalHint);
 
-    elements.closeButton.onclick = hideModal;
-    elements.overlay.onclick = (evt) => {
-        if (evt.target === elements.overlay) {
-            hideModal();
-        }
-    };
-
-    elements.overlay.classList.remove('visually-hidden');
+  renderModal(modalHintContainer);
 }
 
-function hideModal() {
-    const elements = getModalElements();
-    if(!elements) return;
+export function renderLoseModal() {
+  const modalLostTitle = createElement('h2', { className: 'modal-lose-title' }, 'Game Over');
+  const modalLostMessage = createElement('p', { className: 'modal-lose-message' }, 'Unfortunately, we\'re out of moves.');
+  const modalLostScore = createElement('p', { classNam: 'modal-lose-score' }, `Score: ${state.score}`);
+  
+  const contentLostChildrens = [modalLostTitle, modalLostMessage, modalLostScore];
 
-    elements.overlay.classList.add('visually-hidden');
+  //const btnLostClose = createElement('button', { className: 'btn btn-lose-close', 'data-action': 'close' }, 'Close');
+  const btnLostNewGame = createElement('button', { className: 'btn btn-lost-new-game btn-manager-game', 'data-action': 'reset-game' }, 'Play New Game');
+  const btnLostBackToStart = createElement('button', { className: 'btn btn-back-start' }, 'Back To Start');
 
-    elements.closeButton.onclick = null;
-    elements.overlay.onclick = null;
+  const btnLostChildrens = [btnLostNewGame, btnLostBackToStart];
+
+  const containerLostBtn = createElement('div', { className: 'modal-lose-action' }, ...btnLostChildrens);
+
+  const containerLostContent = createElement('div', { className: 'modal-lose' }, ...contentLostChildrens, containerLostBtn);
+
+  const modalLoseContainer = createElement('div', { className: 'modal-overlay lost'}, containerLostContent);
+
+  renderModal(modalLoseContainer);
 }
 
-export { showModal };
+export function renderWinModal() {
+  const modalWinTitle = createElement('h2', { className: 'modal-win-title' }, 'Congratulations on your victory!');
+  const modalWinMessage = createElement('p', { className: 'modal-win-message' }, 'You have successfully found all pairs of numbers.');
+  const modalWinScore = createElement('p', { classNam: 'modal-win-score' }, `Score: ${state.score}`);
+  const modalWinTime = createElement('p', { className: 'modal-win-time' }, `Time: ${state.time}`);
+  const modalWinBestScore = createElement('p', { className: 'modal-win-best' }, `Best score: ${state.highScore[state.mode]}`);
+  
+  const contentWinChildrens = [modalWinTitle, modalWinMessage, modalWinScore, modalWinTime, modalWinBestScore];
+
+  //const btnLostClose = createElement('button', { className: 'btn btn-lose-close', 'data-action': 'close' }, 'Close');
+  const btnWinNewGame = createElement('button', { className: 'btn btn-win-new-game btn-manager-game', 'data-action': 'reset-game' }, 'Play New Game');
+  const btnWinBackToStart = createElement('button', { className: 'btn btn-back-start' }, 'Back To Start');
+
+  const btnWinChildrens = [btnWinNewGame, btnWinBackToStart];
+
+  const containerWinBtn = createElement('div', { className: 'modal-win-action' }, ...btnWinChildrens);
+
+  const containerWinContent = createElement('div', { className: 'modal-win' }, ...contentWinChildrens, containerWinBtn);
+
+  const modalWinContainer = createElement('div', { className: 'modal-overlay won'}, containerWinContent);
+
+  renderModal(modalWinContainer);
+}
+
+export { renderMessageModal, renderLoseModal, renderWinModal };

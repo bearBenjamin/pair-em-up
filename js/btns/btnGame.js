@@ -1,5 +1,5 @@
 import { resetSelection, areaCellsAdjacent, validatePair } from "../gameLogic.js";
-import { showModal } from "../screens/modalScreen.js";
+import { renderMessageModal } from "../screens/modalScreen.js";
 import { state, triggerUIUpdate } from '../state.js';
 
 // блок Hints
@@ -63,17 +63,18 @@ function handleHintBtnClick() {
   const { grid } = state;
 
   if (state.assists.hints === 0) {
-    showModal("The hints have run out.");
+    renderMessageModal("The hints have run out.");
     return;
   }
 
   state.hintsActive = !state.hintsActive;
+  console.log('state.hintsActive: ', state.hintsActive)
 
   if (state.hintsActive) {
     const hints = getAllHints(grid);
-
+console.log('hints: ', hints);
     if (hints.length === 0) {
-      showModal("There are no available moves on the field!");
+      renderMessageModal("There are no available moves on the field!");
       state.hintsActive = false;
       return;
     }
@@ -157,6 +158,7 @@ function shuffleHints(hints) {
 
 // начало блока Add;
 function handleAddClick() {
+  if (state.assists.addNumbers === 0) return;
   const notEmptyGrid = state.grid.filter(Boolean);
   const { grid } = state;
   const newGrid = [...grid, ...notEmptyGrid];
@@ -169,6 +171,7 @@ function handleAddClick() {
 
 // начало блока Shuffle
 function handleShuffleClick() {
+  if (state.assists.shuffle === 0) return;
   const newGrid = state.grid;
   for (let i = newGrid.length - 1; i > 0; i -= 1) {
      const j = Math.floor(Math.random() * (i + 1));
@@ -183,6 +186,7 @@ function handleShuffleClick() {
 
 // начало блока Eraser
 function handleEraserClick() {
+  if (state.assists.eraser === 0) return;
   const cellSellected = document.querySelector('.cell.selected');
   if (cellSellected) {
     const index = cellSellected.getAttribute('data-index');
@@ -193,4 +197,4 @@ function handleEraserClick() {
   }
 }
 
-export { handleEraserClick, handleBtnGameClick };
+export { handleEraserClick, handleBtnGameClick, getAllHints };
