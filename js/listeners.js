@@ -7,7 +7,7 @@ import { handleBtnModeClick } from "./btns/btnMode.js";
 import { handleBtnManagerClick } from "./btns/btnManager.js";
 import { handleBtnBackClik } from "./btns/btnBack.js";
 import { handleToggleTheme } from "./theme.js";
-import { setScore, setModal } from './state.js';
+import { setScore, showModal, resetAssists } from './state.js';
 
 const body = document.body;
 
@@ -16,6 +16,7 @@ const body = document.body;
 
     if (target.closest(".btn-mode-game")) {
       setScore(0);
+      resetAssists();
       handleBtnModeClick(evt);
     }
 
@@ -48,7 +49,7 @@ const body = document.body;
     }
 
     if (target.closest(".modal-hint-close-button")) {
-      setModal(false); 
+      showModal(false); 
       return;
   }
   });

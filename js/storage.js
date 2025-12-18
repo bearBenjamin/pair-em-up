@@ -1,57 +1,35 @@
-import { state, triggerUIUpdate } from './state.js';
-
 const STORAGE__KEY = 'userGameSave';
+const SETTINGS__KEY = 'userGameSettings';
 
-function saveGameState() {
+const save = (key, data) => {
     try {
-        const dataToSave = {
-            mode: state.mode,
-            score: state.score,
-            timer: state.timer,
-            grid: state.grid,
-            setting: state.setting,
-            assists: state.assists,
-            history: state.history,
-        };
-        localStorage.setItem(STORAGE__KEY, JSON.stringify(dataToSave));
-        console.log('Game state saved to localStorage');
-        state.hasSavedGame = true;
-        triggerUIUpdate();
+        localStorage.setItem(key, JSON.stringify(data));
     } catch (error) {
-        console.error('Failed to save game state: ', error);
+        console.error(`Ошибка записи в ${key}: `, error);
     }
-}
+};
 
-function loadGameState() {
+const load = (key) => {
     try {
-        const savedData = localStorage.getItem(STORAGE__KEY);
-        if (savedData) {
-            const parsedData = JSON.parse(savedData);
-            //пока напрямую, потом попробую заменить на сеттеры пока не очень понятно,
-            //как будет отрисовываться экран
-            state.mode = parsedData.mode;
-            state.score = parsedData.score;
-            state.timer = parsedData.timer;
-            state.grid = parsedData.grid;
-            Object.assign(state.setting, parsedData.setting);
-            Object.assign(state.assists, parsedData.assists);
-            state.history = parsedData.history;
-
-            state.hasSavedGame = true;
-            console.log('Game state loaded from localStorage.');
-
-            return true;
-        }
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : null;
     } catch (error) {
-        console.error('Failed to load or parse game state: ', error);
+        console.error(`Ошибка чтения из ${key}: `, error);
     }
-    return false;
-}
+};
 
-function clearSavedGame() {
-    localStorage.removeItem(STORAGE__KEY);
-    state.hasSavedGame = false;
-    console.log('Saved game cleared.');
-}
+const saveGameState = (data) => save(STORAGE__KEY, data);
+const saveGameRecord = (data) => save(SETTINGS__KEY, data);
 
-export { saveGameState, loadGameState, clearSavedGame}
+const loadGameState = (data) => load(STORAGE__KEY, data);
+const loadGameRecord = (data) => load(SETTINGS__KEY, data);
+
+const clearSaveGame = () => localStorage.removeItem(STORAGE__KEY);
+
+export {
+    saveGameState,
+    saveGameRecord,
+    loadGameState,
+    loadGameRecord,
+    clearSaveGame
+}

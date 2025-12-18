@@ -1,6 +1,6 @@
 import './utils.js';
 import './listeners.js';
-import { initializeUIRunner, state, setCurrentScreen, updateHightScore } from "./state.js";
+import { initializeUIRunner, state, setCurrentScreen, updateHightScore, initLoadedData, resetAssists } from "./state.js";
 import { startTimer, stopTimer, resetTimer } from './timer.js';
 import { loadGameState } from './storage.js';
 import { renderStarScreen } from "./screens/startScreen.js";
@@ -12,13 +12,14 @@ import { renderGameResultScreen } from "./screens/gameScreen/gameResultScreen.js
 import { renderLoseModal, renderWinModal } from './screens/modalScreen.js';
 
 const updateUI = () => {
+  console.log('state: ', state);
   console.log('Central UI Dispatcher running for screen: ', state.currentScreen);
   const exitModal = document.querySelector('.modal-overlay');
   if(exitModal) exitModal.remove();
 
-  if (state.gameStatus === 'won' && state.mode) {
-    updateHightScore(state.mode, state.score);
-  }
+  // if (state.gameStatus === 'won' && state.mode) {
+  //   updateHightScore(state.mode, state.score);
+  // }
 
   switch (state.currentScreen) {
     case 'start' :
@@ -37,9 +38,12 @@ const updateUI = () => {
           if (state.ui.isModalOpen) {
             switch (state.ui.modalType) {
               case 'win' :
+                stopTimer();
+                updateHightScore(state.mode, state.score);
                 renderWinModal();
                 break;
               case 'lose' :
+                stopTimer();
                 renderLoseModal();
                 break;
             }
@@ -71,10 +75,6 @@ const updateUI = () => {
       stopTimer();
       renderGameResultScreen();
       break;
-    
-    case 'gameOver':
-      stopTimer();
-      break;
 
     default:
       console.error('Неизвестный экран. Возврат на стартовый экран');
@@ -83,7 +83,8 @@ const updateUI = () => {
 }
 
 const init = () => {
-  loadGameState();
+  //loadGameState();
+  initLoadedData();
   initializeUIRunner(updateUI);
   updateUI();
 };
