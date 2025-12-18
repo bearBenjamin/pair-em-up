@@ -1,6 +1,7 @@
 import { resetSelection, areaCellsAdjacent, validatePair } from "../gameLogic.js";
 import { renderMessageModal } from "../screens/modalScreen.js";
 import { state, triggerUIUpdate } from '../state.js';
+import { addMoveToHistory } from "../utils.js";
 
 // блок Hints
 const NUM_HINTS = 5;
@@ -43,16 +44,39 @@ function handleBackspaceClick() {
   }
 
   const lastMove = state.history.pop();
+  
+  switch (lastMove.type) {
+    case 'move' : {
+      const { cell1Index, cell2Index, cell1Value, cell2Value, pointsScored } = lastMove;
+ 
+      state.grid[cell1Index] = cell1Value;
+      state.grid[cell2Index] = cell2Value;
+      state.score = state.score - pointsScored;
+      break;
+    }
 
-  const { cell1Index, cell2Index, cell1Value, cell2Value, pointsScored } =
-    lastMove;
+    case 'eraser' : {
+      const { cell1Index, cell1Value } = lastMove;
+      state.grid[cell1Index] = cell1Value;
+      state.assists.eraser += 1; // Возвращаем бонус
+      break; 
+    }
 
-  state.grid[cell1Index] = cell1Value;
-  state.grid[cell2Index] = cell2Value;
-  state.score = state.score - pointsScored;
+    case 'add' : {
+      state.grid = lastMove.oldGrid;
+      state.assists.addNumbers += 1;
+      break;
+    }
+
+    case 'shuffle' : {
+      state.grid = lastMove.oldGrid;
+      state.assists.shuffle += 1;
+      break;
+    }
+  }
 
   state.hasRevertedLastMove = true;
-  resetSelection(state);
+  resetSelection();
   //renderGameScreen(state);
   triggerUIUpdate();
 }
@@ -159,11 +183,19 @@ function shuffleHints(hints) {
 // начало блока Add;
 function handleAddClick() {
   if (state.assists.addNumbers === 0) return;
+
+  state.history.push({
+    type: 'add',
+    oldGrid: [...state.grid],
+  });
+
   const notEmptyGrid = state.grid.filter(Boolean);
   const { grid } = state;
   const newGrid = [...grid, ...notEmptyGrid];
   state.grid = newGrid;
   //renderGameScreen(currentState);
+  state.assists.addNumbers -= 1;
+  state.hasRevertedLastMove = false;
   triggerUIUpdate();
 }
 // конец блока Add;
@@ -172,14 +204,34 @@ function handleAddClick() {
 // начало блока Shuffle
 function handleShuffleClick() {
   if (state.assists.shuffle === 0) return;
-  const newGrid = state.grid;
-  for (let i = newGrid.length - 1; i > 0; i -= 1) {
+  
+  const numbers = state.grid.filter(cell => cell !== '');
+
+  if (numbers.length === 0) return;
+
+  state.history.push({
+    type: 'shuffle',
+    oldGrid: [...state.grid],
+  });
+
+  for (let i = numbers.length - 1; i > 0; i -= 1) {
      const j = Math.floor(Math.random() * (i + 1));
-    [newGrid[i], newGrid[j]] = [newGrid[j], newGrid[i]];
+    [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
   }
 
+  let numberIndex = 0;
+  const newGrid = state.grid.map((cell) => {
+    if (cell !== '') {
+      const newValue = numbers[numberIndex];
+      numberIndex += 1;
+      return newValue;
+    }
+    return cell;
+  });
   state.grid = newGrid;
   //renderGameScreen(currentState);
+  state.assists.shuffle -= 1;
+  state.hasRevertedLastMove = false;
   triggerUIUpdate();
 }
 // конец блока Shuffle;
@@ -187,13 +239,37 @@ function handleShuffleClick() {
 // начало блока Eraser
 function handleEraserClick() {
   if (state.assists.eraser === 0) return;
-  const cellSellected = document.querySelector('.cell.selected');
+  
+  /*const cellSellected = document.querySelector('.cell.selected');
   if (cellSellected) {
     const index = cellSellected.getAttribute('data-index');
     state.grid[index] = '';
     state.firstClick = null;
     state.selectedCells = [];
+    state.assists.eraser -= 1;
     triggerUIUpdate();
+  }*/
+
+  if (state.selectedCells.length > 0) {
+    const index = state.selectedCells[0];
+    const oldValue = state.grid[index];
+
+    if (oldValue === '') return;
+
+    /*state.history.push({
+      type: 'eraser',
+      index: index,
+      oldValue: oldValue,
+    });*/
+    addMoveToHistory(state, index, null, oldValue, null, 0, 'eraser');
+
+    state.grid[index] = '';
+    state.selectedCells = [];
+    state.firstClick = null;
+    state.assists.eraser -= 1;
+    state.hasRevertedLastMove = false;
+    triggerUIUpdate();
+
   }
 }
 

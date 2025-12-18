@@ -1,5 +1,6 @@
 import { formatTime } from "../../timer.js";
 import { createElement } from "../../utils.js";
+import { state } from '../../state.js';
 
 function renderGameScreen(state) {
   document.body.innerHTML = "";
@@ -145,27 +146,27 @@ function renderGameScreen(state) {
   const btnHints = createElement(
     "button",
     { className: "btn btn-game btn-hints", "data-action": "hints" },
-    "Hints"
+    `Hints ${state.assists['hints']}`
   );
   const btnBackspace = createElement(
     "button",
     { className: "btn btn-game btn-backspace", "data-action": "backspace" },
-    "Backspace"
+    'Backspace'
   );
   const btnAdd = createElement(
     "button",
     { className: "btn btn-game btn-add", "data-action": "add" },
-    "Add Numbers"
+    `Add Numbers ${state.assists['addNumbers']}`
   );
   const btnShuffle = createElement(
     "button",
     { className: "btn btn-game btn-shuffle", "data-action": "shuffle" },
-    "Shuffle"
+    `Shuffle ${state.assists['shuffle']}`
   );
   const btnEraser = createElement(
     "button",
     { className: "btn btn-game btn-eraser", "data-action": "eraser" },
-    "Eraser"
+    `Eraser ${state.assists['eraser']}`
   );
 
   const btnChildrens = [btnHints, btnBackspace, btnAdd, btnShuffle, btnEraser];
@@ -182,12 +183,6 @@ function renderGameScreen(state) {
     btnContainer
   );
 
-  // Модальные окна
-
-  
-
-  
- 
   // собираю и отрисовываю экран полностью
   const container = createElement(
     "div",
@@ -195,9 +190,6 @@ function renderGameScreen(state) {
     header,
     main,
     footer,
-    //modalHintContainer,
-    //modalLoseContainer,
-    //modalWinContainer,
   );
 
   document.body.append(container);

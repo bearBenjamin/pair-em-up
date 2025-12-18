@@ -78,8 +78,9 @@ function shuffleElement(array) {
   return arr;
 }
 
-function addMoveToHistory(state, index1, index2, value1, value2, points) {
+function addMoveToHistory(state, index1, index2, value1, value2, points, type = 'move') {
   const move = {
+    type,
     moveIndex: state.history.length + 1,
     cell1Index: index1,
     cell2Index: index2,

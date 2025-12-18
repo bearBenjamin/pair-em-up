@@ -1,4 +1,5 @@
 import { createElement } from "../../utils.js";
+import { state } from '../../state.js';
 
 function renderGameResultScreen() {
     document.body.innerHTML = '';
@@ -11,17 +12,17 @@ function renderGameResultScreen() {
     const rowOne = createElement('tr', { className: 'row-one' }, colTitleOne, colTitleTwo);
   
     const colNameOneRowTwo = createElement('td', { className: 'name-item-table' }, 'Classic');
-    const colNameTwoRowTwo = createElement('td', { className: 'name-item-table' });
+    const colNameTwoRowTwo = createElement('td', { className: 'name-item-table' }, `${state.highScore['classic']}`);
   
     const rowTwo = createElement('tr', { className: 'row-two' }, colNameOneRowTwo, colNameTwoRowTwo);
   
     const colNameOneRowThree = createElement('td', { className: 'name-item-table' }, 'Random');
-    const colNameTwoRowThree = createElement('td', { className: 'name-item-table' });
+    const colNameTwoRowThree = createElement('td', { className: 'name-item-table' }, `${state.highScore['random']}`);
   
     const rowThree = createElement('tr', { className: 'row-three' }, colNameOneRowThree, colNameTwoRowThree);
   
     const colNameOneRowFour = createElement('td', { className: 'name-item-table' }, 'Chaotic');
-    const colNameTwoRowFour = createElement('td', { className: 'name-item-table' });
+    const colNameTwoRowFour = createElement('td', { className: 'name-item-table' }, `${state.highScore['chaotic']}`);
   
     const rowFour = createElement('tr', { className: 'row-four' }, colNameOneRowFour, colNameTwoRowFour);
   

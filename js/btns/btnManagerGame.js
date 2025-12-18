@@ -1,5 +1,5 @@
-import { state, setCurrentScreen, setGrid, setScore, setTimer, setModal, triggerUIUpdate } from "../state.js";
-import { clearSavedGame, saveGameState } from "../storage.js";
+import { state, setCurrentScreen, setGrid, setScore, setTimer, setModal, triggerUIUpdate, resetAssists, persistState } from "../state.js";
+import { clearSaveGame } from "../storage.js";
 import { getGrid } from "../utils.js";
 
 function handleBtnManagerGameClick(evt) {
@@ -9,17 +9,19 @@ function handleBtnManagerGameClick(evt) {
       setGrid(newGrid);
       setScore(0);
       setTimer(0);
-      setModal(false)
+      setModal(false);
+      resetAssists();
       setCurrentScreen('game');
       break;
 
     case "clear-game":
-      clearSavedGame();
+      clearSaveGame();
+      state.hasSavedGame = false;
       triggerUIUpdate();
       break;
 
     case "save-game":
-      saveGameState();
+      persistState();
       triggerUIUpdate();
       break;
   }

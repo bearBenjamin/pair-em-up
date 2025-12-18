@@ -1,7 +1,6 @@
 import { addMoveToHistory } from "./utils.js";
 import { renderHints, getAllHints } from "./btns/btnGame.js";
-import { state, triggerUIUpdate, setGameStatus, setModal } from './state.js';
-//import { showModal } from "./screens/modalScreen.js";
+import { state, triggerUIUpdate, setGameStatus, showModal } from './state.js';
 
 const GRID_COLUMNS = 9;
 
@@ -114,33 +113,28 @@ function getSortIndex(index1, index2) {
 function checkForGameEnd() {
   const remainingCells = state.grid.filter(Boolean).length;
   const availableHints = getAllHints(state.grid).length;
-  console.log('remainingCells: ', remainingCells);
-  console.log('availableHints: ', availableHints);
 
   if (remainingCells === 0) {
     setGameStatus('won');
-    setModal(true, 'win');
+    showModal(true, 'win');
     return;
-  } 
+  }
+  
+  if (availableHints > 0) return;
 
   const canUseAdd = state.assists.addNumbers > 0;
-  console.log('canUseAdd: ', canUseAdd);
   const canUseShuffle = state.assists.shuffle > 0;
-  console.log('canUseShuffle: ', canUseShuffle);
   const canUseEraser = state.assists.eraser > 0 && state.selectedCells.length > 0;
-  console.log('canUseEraser: ', canUseEraser);
 
   if (canUseAdd || canUseShuffle || canUseEraser) {
       console.log("Нет естественных ходов, но доступны assists. Игра продолжается.");
       return;
   }
 
-  console.log('availabelHints: ', availableHints);
-  console.log('state.assists.hints: ', state.assists.hints);
-  console.log('remainingCells: ', remainingCells);
-  if (availableHints === 0 && state.assists.hints === 0 && remainingCells > 0) {
+  if (remainingCells > 0) {
     setGameStatus('lost');
-    setModal(true, 'lose');
+    showModal(true, 'lose');
+    return;
   }
 }
 
@@ -174,7 +168,6 @@ function areaCellsAdjacent(index1, index2, grid) {
     const endRow = Math.max(row1, row2);
     for (let i = startRow; i < endRow; i += 1) {
       const cellIndex = i * GRID_COLUMNS + col1;
-      // console.log('cellIndex: ', cellIndex);
       if (grid[cellIndex]) return false;
     }
     return true;
