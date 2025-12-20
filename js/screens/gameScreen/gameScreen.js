@@ -195,19 +195,15 @@ function renderGameScreen(state) {
   document.body.append(container);
 }
 
-function renderGrid(grid, selectedCells) {
+function renderGrid(grid) {
   const gridElement = createElement("div", { className: "game-grid" });
 
   grid.forEach((cellValue, index) => {
-    // Пропускаю пустые ячейки в конце массива, чтобы они не занимали место
-    // if (grid.length > 0 && index >= grid.length && !cellValue) return;
-
     const isCellEmpty = !cellValue;
-    //const isCellSelected = selectedCells.includes(index);
 
     // Создаю ячейку
     const cell = createElement("div", {
-      className: `cell ${isCellEmpty ? "empty" : ""}`,
+      className: `cell ${isCellEmpty ? "empty strikethrough" : ""}`,
       "data-index": index,
       "data-action": "select-cell",
       textContent: isCellEmpty ? "" : cellValue,

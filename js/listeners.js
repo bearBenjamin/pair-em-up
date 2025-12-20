@@ -8,11 +8,17 @@ import { handleBtnManagerClick } from "./btns/btnManager.js";
 import { handleBtnBackClik } from "./btns/btnBack.js";
 import { handleToggleTheme } from "./theme.js";
 import { setScore, showModal, resetAssists } from './state.js';
+import { playSound } from './audio.js';
 
 const body = document.body;
 
   body.addEventListener("click", (evt) => {
     const target = evt.target;
+
+  
+  if (target.closest('.btn')) {
+    playSound('click'); // Звук на любой клик по кнопке
+  }
 
     if (target.closest(".btn-mode-game")) {
       setScore(0);
@@ -45,6 +51,7 @@ const body = document.body;
     }
 
     if (target.closest(".cell")) {
+      playSound('click');
       handleGameFieldClick(evt);
     }
 

@@ -1,6 +1,7 @@
 import { addMoveToHistory } from "./utils.js";
 import { renderHints, getAllHints } from "./btns/btnGame.js";
 import { state, triggerUIUpdate, setGameStatus, showModal } from './state.js';
+import { playSound } from "./audio.js";
 
 const GRID_COLUMNS = 9;
 
@@ -57,6 +58,7 @@ function processSelection() {
 
   // Проверка возможности соединить ячейки
   if (!areaCellsAdjacent(index1, index2, grid)) {
+    playSound('abort');
     console.log("Ячейки не являются смежными");
     resetSelection();
     return triggerUIUpdate();
@@ -66,6 +68,7 @@ function processSelection() {
   const { isValid, points } = validatePair(value1, value2);
 
   if (!isValid) {
+    playSound('abort');
     console.log("Пара не валидна");
     resetSelection();
     return triggerUIUpdate();
@@ -85,6 +88,7 @@ function processSelection() {
   }
 
   addMoveToHistory(state, index1, index2, value1, value2, points); // записываю ход в историю
+  playSound('happi');
   resetSelection(); // Сбрасываю после успешной обработки
 
   checkForGameEnd();
