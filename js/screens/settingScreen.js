@@ -1,6 +1,7 @@
 import { createElement } from "../utils.js";
+import { state } from '../state.js';
 
-function renderSettingScreen (curentState) {
+function renderSettingScreen () {
     document.body.innerHTML = '';
 
     const title = createElement('h1', { className: 'page-title' }, 'Setting');
@@ -12,6 +13,7 @@ function renderSettingScreen (curentState) {
     soundCheckbox.setAttribute('type', 'checkbox');
     soundCheckbox.setAttribute('name', 'sound');
     soundCheckbox.setAttribute('id', 'sound');
+    soundCheckbox.checked = state.setting.soundEnabled;
 
     const soundContainer = createElement('div', { className: 'sound-control-container' }, soundLabel, soundCheckbox);
 
@@ -19,10 +21,11 @@ function renderSettingScreen (curentState) {
     const themeLabel = createElement('label', { className: 'theme-label' }, 'Theme');
     themeLabel.setAttribute('for', 'theme');
     const themeSelect = createElement('select', { className: 'toggle-theme', id: 'theme', name: 'theme'});
-    const lightOption = createElement('option', { value: 'light', selected: curentState.setting.theme === 'light' }, 'Light');
-    const darkOption = createElement('option', { value: 'dark', selected: curentState.setting.theme === 'dark' }, 'Dark');
-    themeSelect.append(lightOption);
-    themeSelect.append(darkOption);
+    const lightOption = createElement('option', { value: 'light' }, 'Light');
+    const darkOption = createElement('option', { value: 'dark' }, 'Dark');
+    if (state.setting.theme === 'light') lightOption.selected = true;
+    if (state.setting.theme === 'dark') darkOption.selected = true;
+    themeSelect.append(lightOption, darkOption);
 
     const themeSetting = createElement('div', { className: 'theme-container' }, themeLabel, themeSelect);
 

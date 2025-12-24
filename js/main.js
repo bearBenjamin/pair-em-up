@@ -1,8 +1,8 @@
 import './utils.js';
 import './listeners.js';
-import { initializeUIRunner, state, setCurrentScreen, updateHightScore, initLoadedData, resetAssists } from "./state.js";
-import { startTimer, stopTimer, resetTimer } from './timer.js';
-import { loadGameState } from './storage.js';
+import './audio.js';
+import { initializeUIRunner, state, setCurrentScreen, updateHightScore, initLoadedData } from "./state.js";
+import { startTimer, stopTimer } from './timer.js';
 import { renderStarScreen } from "./screens/startScreen.js";
 import { renderGameScreen } from "./screens/gameScreen/gameScreen.js";
 import { renderSettingScreen } from "./screens/settingScreen.js";
@@ -10,16 +10,15 @@ import { renderResultScreen } from "./screens/resultScreen.js";
 import { renderGameSettingScreen } from "./screens/gameScreen/gameSettingScreen.js";
 import { renderGameResultScreen } from "./screens/gameScreen/gameResultScreen.js";
 import { renderLoseModal, renderWinModal } from './screens/modalScreen.js';
+import { renderRulesScreen } from './screens/rulesScreen.js';
+import { playSound } from './audio.js';
 
 const updateUI = () => {
   console.log('state: ', state);
   console.log('Central UI Dispatcher running for screen: ', state.currentScreen);
   const exitModal = document.querySelector('.modal-overlay');
-  if(exitModal) exitModal.remove();
 
-  // if (state.gameStatus === 'won' && state.mode) {
-  //   updateHightScore(state.mode, state.score);
-  // }
+  if(exitModal) exitModal.remove();
 
   switch (state.currentScreen) {
     case 'start' :
@@ -40,10 +39,12 @@ const updateUI = () => {
               case 'win' :
                 stopTimer();
                 updateHightScore(state.mode, state.score);
+                playSound('win');
                 renderWinModal();
                 break;
               case 'lose' :
                 stopTimer();
+                playSound('lose');
                 renderLoseModal();
                 break;
             }
@@ -54,6 +55,10 @@ const updateUI = () => {
         console.error('Неизвестный игровой режим. Возврат на старт.');
         setCurrentScreen('start');
       }
+      break;
+
+    case 'rules' :
+      renderRulesScreen();
       break;
 
     case 'setting' :
@@ -83,7 +88,6 @@ const updateUI = () => {
 }
 
 const init = () => {
-  //loadGameState();
   initLoadedData();
   initializeUIRunner(updateUI);
   updateUI();

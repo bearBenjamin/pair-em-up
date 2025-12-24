@@ -1,18 +1,19 @@
-import { setTheme } from "./state.js";
+import { setTheme, setSound } from "./state.js";
 
 const body = document.body;
 
 function handleToggleTheme(evt) {
-  if (evt.target.value === "on") {
-    return;
-  }
+  const target = evt.target;
 
-  if (evt.target.value === "dark") {
-    body.setAttribute("data-theme", "dark");
-    setTheme('dark');
-  } else {
-    body.setAttribute("data-theme", "light");
-    setTheme('light');
+  if (target.name === 'theme') {
+    const selectedTheme = target.value;
+    body.setAttribute('data-theme', selectedTheme);
+    setTheme(selectedTheme);
+  }
+  
+  if (target.name === 'sound') {
+    const isSoundOn = target.checked;
+    setSound(isSoundOn);
   }
 }
 

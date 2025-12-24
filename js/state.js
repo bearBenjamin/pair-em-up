@@ -1,10 +1,10 @@
 import { saveGameState, saveGameRecord, loadGameState, loadGameRecord, } from "./storage.js";
 
 const DEFAULT__ASSISTS = {
-  hints: 50,
-  addNumbers: 100,
-  shuffle: 50,
-  eraser: 50,
+  hints: 5,
+  addNumbers: 5,
+  shuffle: 5,
+  eraser: 5,
 }
 
 const state = {
@@ -77,6 +77,10 @@ function initLoadedData() {
 
   const savedGame = loadGameState();
   state.hasSavedGame = !!savedGame;
+
+  if (state.setting.theme) {
+    document.body.setAttribute('data-theme', state.setting.theme);
+  }
 }
 
 function loadAndApplySavedGame() {
@@ -98,8 +102,7 @@ function triggerUIUpdate() {
   UIRunnerCallback();
 }
 
-function setCurrentScreen(screenName) {
-  console.log('--- МЕНЯЕМ ЭКРАН НА:', screenName); 
+function setCurrentScreen(screenName) { 
   state.currentScreen = screenName;
   UIRunnerCallback();
 }
@@ -118,8 +121,14 @@ function setScore(newScore) {
 
 function setTheme(newTheme) {
   state.setting.theme = newTheme;
+  document.documentElement.setAttribute('data-theme', newTheme);
   persistRecord();
   UIRunnerCallback();
+}
+
+function setSound(isEnabled) {
+  state.setting.soundEnabled = isEnabled;
+  persistRecord();
 }
 
 function setTimer(newTime) {
@@ -170,6 +179,7 @@ export {
   setGrid,
   setScore,
   setTheme,
+  setSound,
   setTimer,
   updateHightScore,
   showModal,
