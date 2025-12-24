@@ -2,9 +2,9 @@ import { saveGameState, saveGameRecord, loadGameState, loadGameRecord, } from ".
 
 const DEFAULT__ASSISTS = {
   hints: 5,
-  addNumbers: 1,
-  shuffle: 2,
-  eraser: 1,
+  addNumbers: 5,
+  shuffle: 5,
+  eraser: 5,
 }
 
 const state = {

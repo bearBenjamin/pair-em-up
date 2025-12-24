@@ -1,5 +1,6 @@
 import { handleGameFieldClick } from "./gameLogic.js";
 import { handleBtnManagerGameClick } from "./btns/btnManagerGame.js";
+import { handleBtnRulesClick } from "./btns/btnRules.js";
 import { handleBtnGameClick } from "./btns/btnGame.js";
 import { handleBtnNavigationClick } from "./btns/btnNavigation.js";
 import { handleBtnBackGameClick } from "./btns/btnBackGame.js";
@@ -24,6 +25,10 @@ const body = document.body;
       setScore(0);
       resetAssists();
       handleBtnModeClick(evt);
+    }
+
+    if (target.closest('.btn-rules-game')) {
+      handleBtnRulesClick(evt);
     }
 
     if (target.closest(".btn-manager")) {

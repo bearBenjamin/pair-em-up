@@ -2,7 +2,7 @@ import { formatTime } from "../../timer.js";
 import { createElement } from "../../utils.js";
 import { state } from '../../state.js';
 
-function renderGameScreen(state) {
+function renderGameScreen() {
   document.body.innerHTML = "";
 
   const { mode, timer, score, grid, selectedCells } = state;
@@ -22,7 +22,7 @@ function renderGameScreen(state) {
   const scoreCount = createElement(
     "p",
     { className: "score-count" },
-    `${score} / 100`
+    `${score}`
   );
   const scoreContainer = createElement(
     "div",

@@ -10,6 +10,7 @@ import { renderResultScreen } from "./screens/resultScreen.js";
 import { renderGameSettingScreen } from "./screens/gameScreen/gameSettingScreen.js";
 import { renderGameResultScreen } from "./screens/gameScreen/gameResultScreen.js";
 import { renderLoseModal, renderWinModal } from './screens/modalScreen.js';
+import { renderRulesScreen } from './screens/rulesScreen.js';
 import { playSound } from './audio.js';
 
 const updateUI = () => {
@@ -54,6 +55,10 @@ const updateUI = () => {
         console.error('Неизвестный игровой режим. Возврат на старт.');
         setCurrentScreen('start');
       }
+      break;
+
+    case 'rules' :
+      renderRulesScreen();
       break;
 
     case 'setting' :

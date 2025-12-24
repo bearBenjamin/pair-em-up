@@ -31,13 +31,19 @@ function renderStarScreen() {
     { className: "btn btn-mode-game", "data-action": "open-chaotic-screen" },
     "Chaotic"
   );
+  const btnRules = createElement(
+    'button',
+    { className: 'btn btn-rules-game', 'data-action': 'open-rules-screen' },
+    'Rules'
+  )
 
   const btnModeContainer = createElement(
     "div",
     { className: "btn-mode-game-container" },
     btnClassicMode,
     btnRandomMode,
-    btnChaoticMode
+    btnChaoticMode,
+    btnRules
   );
 
   const btnSettings = createElement(
